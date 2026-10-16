@@ -263,6 +263,7 @@ interface UploadProps {
 
 function UploadUI({ wasRefreshed: _wasRefreshed, onPhotos }: UploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
 
   function handleFiles(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
@@ -296,38 +297,57 @@ function UploadUI({ wasRefreshed: _wasRefreshed, onPhotos }: UploadProps) {
       >
         오늘 찍은 사진을 골라주세요 📷
       </p>
-      {/* Upload button wrapping file input */}
-      <label
-        style={{
-          display: 'inline-block',
-          fontFamily: 'Jua, sans-serif',
-          fontSize: 18,
-          color: 'white',
-          background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)',
-          borderRadius: 16,
-          padding: '14px 28px',
-          cursor: 'pointer',
-          boxShadow: '0 4px 14px rgba(14,165,233,0.35)',
-          userSelect: 'none',
-          transition: 'transform 0.1s',
-        }}
-        onMouseDown={(e) =>
-          ((e.currentTarget as HTMLLabelElement).style.transform = 'scale(0.96)')
-        }
-        onMouseUp={(e) =>
-          ((e.currentTarget as HTMLLabelElement).style.transform = 'scale(1)')
-        }
-      >
-        📁 사진 고르기
-        <input
-          ref={inputRef}
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleFiles}
-          style={{ display: 'none' }}
-        />
-      </label>
+      {/* 버튼 두 개: 갤러리 / 카메라 */}
+      <div style={{ display: 'flex', gap: 12 }}>
+        <label
+          style={{
+            display: 'inline-block',
+            fontFamily: 'Jua, sans-serif',
+            fontSize: 17,
+            color: 'white',
+            background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)',
+            borderRadius: 16,
+            padding: '13px 22px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 14px rgba(14,165,233,0.35)',
+            userSelect: 'none',
+          }}
+        >
+          🖼️ 갤러리
+          <input
+            ref={inputRef}
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFiles}
+            style={{ display: 'none' }}
+          />
+        </label>
+        <label
+          style={{
+            display: 'inline-block',
+            fontFamily: 'Jua, sans-serif',
+            fontSize: 17,
+            color: '#0ea5e9',
+            background: 'white',
+            border: '1.5px solid #bae6fd',
+            borderRadius: 16,
+            padding: '13px 22px',
+            cursor: 'pointer',
+            userSelect: 'none',
+          }}
+        >
+          📷 카메라
+          <input
+            ref={cameraRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleFiles}
+            style={{ display: 'none' }}
+          />
+        </label>
+      </div>
     </div>
   );
 }

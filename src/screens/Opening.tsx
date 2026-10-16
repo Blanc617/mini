@@ -91,7 +91,7 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
         {step === 0 && (
           <motion.div
             key="step0"
-            className="h-full flex flex-col items-center justify-center px-6 py-4 relative z-10"
+            className="h-full flex flex-col items-center justify-center px-6 pt-4 pb-8 relative z-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
