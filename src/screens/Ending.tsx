@@ -91,7 +91,7 @@ function TitleSlide() {
           지누 × 미니
         </span>
         <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>
-          2026. 10. 17
+          🎂 미니의 생일 · 2026. 10. 17
         </span>
       </motion.div>
 
