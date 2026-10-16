@@ -91,7 +91,7 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
         {step === 0 && (
           <motion.div
             key="step0"
-            className="h-full flex flex-col items-center justify-center p-6 relative z-10"
+            className="h-full flex flex-col items-center justify-center px-6 py-4 relative z-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
@@ -102,7 +102,7 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
               initial={{ y: -16, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.15 }}
-              className="bg-white/60 backdrop-blur-sm border border-sky-200 rounded-full px-4 py-1.5 text-sky-500 text-sm font-noto mb-7"
+              className="bg-white/60 backdrop-blur-sm border border-sky-200 rounded-full px-4 py-1.5 text-sky-500 text-sm font-noto mb-4"
             >
               🎂 2026.10.17 토요일
             </motion.div>
@@ -121,7 +121,7 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
               initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.42, type: 'spring', stiffness: 180 }}
-              className="font-jua text-5xl text-sky-400 text-center leading-tight mb-7"
+              className="font-jua text-5xl text-sky-400 text-center leading-tight mb-5"
             >
               Mini Day 🎉
             </motion.h1>
@@ -131,37 +131,36 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
               initial={{ y: 28, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.58 }}
-              className="w-full max-w-xs mb-9"
+              className="w-full max-w-xs mb-4"
               style={{
                 background: 'linear-gradient(145deg, rgba(255,255,255,0.75), rgba(240,249,255,0.85))',
                 backdropFilter: 'blur(12px)',
                 borderRadius: 28,
                 border: '1.5px solid rgba(255,255,255,0.9)',
                 boxShadow: '0 8px 32px rgba(56,189,248,0.15), 0 2px 8px rgba(0,0,0,0.06)',
-                overflow: 'hidden',
               }}
             >
               {/* 상단 장식 띠 */}
-              <div style={{ background: 'linear-gradient(135deg, #38bdf8, #7dd3fc, #a5f3fc)', padding: '10px 0', textAlign: 'center', letterSpacing: 6, fontSize: 16 }}>
+              <div style={{ background: 'linear-gradient(135deg, #38bdf8, #7dd3fc, #a5f3fc)', padding: '10px 0', textAlign: 'center', letterSpacing: 6, fontSize: 16, borderRadius: '26px 26px 0 0' }}>
                 ✦ ✦ ✦ ✦ ✦
               </div>
 
               {/* 본문 */}
-              <div style={{ padding: '20px 24px 18px' }}>
+              <div style={{ padding: '16px 24px 16px' }}>
                 <p className="font-jua text-left text-sky-400 mb-1" style={{ fontSize: 15 }}>To. 미니 💌</p>
-                <p className="font-noto text-sky-300 text-xs text-center tracking-widest mb-3">INVITATION</p>
+                <p className="font-noto text-sky-300 text-xs text-center tracking-widest mb-2">INVITATION</p>
 
-                <p className="font-jua text-center text-slate-700 leading-relaxed mb-2" style={{ fontSize: 17 }}>
+                <p className="font-jua text-center text-slate-700 leading-relaxed mb-1" style={{ fontSize: 17 }}>
                   오늘 하루만큼은
                 </p>
-                <p className="font-jua text-center leading-snug mb-3" style={{ fontSize: 22, background: 'linear-gradient(135deg, #0ea5e9, #38bdf8, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <p className="font-jua text-center leading-snug mb-2" style={{ fontSize: 22, background: 'linear-gradient(135deg, #0ea5e9, #38bdf8, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   세상에서 제일<br />특별한 하루 🎁
                 </p>
                 <p className="font-noto text-slate-500 text-center text-sm leading-relaxed">
                   지누가 미니만을 위해<br />준비했어요 💙
                 </p>
 
-                <p className="font-noto text-right text-xs text-sky-400 mt-4">from. 지누 🩵</p>
+                <p className="font-noto text-right text-xs text-sky-400 mt-3">from. 지누 🩵</p>
               </div>
 
             </motion.div>
@@ -171,7 +170,7 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.65 }}
-              className="flex items-center gap-2 bg-white/50 backdrop-blur-sm border border-white/70 rounded-full px-4 py-2 mb-5"
+              className="flex items-center gap-2 bg-white/50 backdrop-blur-sm border border-white/70 rounded-full px-4 py-2 mb-4"
             >
               <span className="text-base">🎩</span>
               <p className="font-noto text-xs text-slate-400">오늘의 호스트</p>
