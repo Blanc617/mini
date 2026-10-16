@@ -108,18 +108,18 @@ function TitleSlide({ photoUrls }: { photoUrls: string[] }) {
           background: 'linear-gradient(135deg, #fde8c8, #fcd5a0)',
         }}>
           {photoUrls.length > 0 ? (
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={photoIdx}
-                src={photoUrls[photoIdx]}
-                alt="오늘의 사진"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
-              />
-            </AnimatePresence>
+            <>
+              {photoUrls.map((url, i) => (
+                <motion.img
+                  key={i}
+                  src={url}
+                  alt="오늘의 사진"
+                  animate={{ opacity: i === photoIdx ? 1 : 0 }}
+                  transition={{ duration: 0.5 }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
+                />
+              ))}
+            </>
           ) : (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
               <span style={{ fontSize: 40 }}>📸</span>
