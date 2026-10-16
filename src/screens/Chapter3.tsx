@@ -325,7 +325,7 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
                 <div className="flex items-start gap-2">
                   <span className="font-noto text-slate-400 text-xs shrink-0 mt-0.5">미션 내용</span>
                   <span className="font-noto text-slate-400 text-xs mt-0.5">:</span>
-                  <p className="font-noto text-slate-600 text-sm leading-relaxed">{slot.mission}</p>
+                  <p className="font-noto text-slate-600 text-sm leading-relaxed" style={{ whiteSpace: 'pre-line' }}>{slot.mission}</p>
                 </div>
 
                 {/* Map link */}
@@ -343,8 +343,8 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
                 {/* ── Winner selection (hat / pin kinds) ───────────────────── */}
                 {slot.hasWinner && (
                   <div className="flex flex-col gap-2">
-                    <p className="font-noto text-slate-500 text-xs text-center">
-                      GPT 판정 결과, 이긴 사람은?
+                    <p className="font-noto text-slate-700 text-sm text-center font-bold">
+                      GPT 판정결과 승자는?
                     </p>
                     <div className="flex gap-2">
                       <button
