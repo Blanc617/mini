@@ -152,7 +152,7 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
 
   return (
     <div
-      className="h-full flex flex-col items-center justify-start p-4 pt-8 relative overflow-hidden"
+      className={`h-full flex flex-col items-center justify-start p-4 relative overflow-hidden ${phase === 'revealed' ? 'pt-4' : 'pt-8'}`}
       style={{ background: 'linear-gradient(160deg, #e0f2fe 0%, #bae6fd 50%, #f0f9ff 100%)' }}
     >
       {/* Back button — shown in idle and revealed phases, not during spinning */}
@@ -178,8 +178,8 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
       {/* ── Wheel ────────────────────────────────────────────────────────────── */}
       <div className="relative flex items-center justify-center mb-3">
         <svg
-          width={phase === 'revealed' ? 220 : 300}
-          height={phase === 'revealed' ? 220 : 300}
+          width={phase === 'revealed' ? 180 : 300}
+          height={phase === 'revealed' ? 180 : 300}
           viewBox="0 0 300 300"
           style={{ display: 'block', filter: 'drop-shadow(0 8px 24px rgba(14,165,233,0.18))' }}
         >
@@ -297,20 +297,20 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
             <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border border-white/80 overflow-hidden mb-3">
               {/* Card header */}
               <div
-                className="p-5 pb-4"
+                className="px-4 py-3"
                 style={{ background: 'linear-gradient(135deg, #e0f2fe, #bae6fd)' }}
               >
-                <p className="font-noto text-sky-400 text-xs tracking-widest mb-1">
+                <p className="font-noto text-sky-400 text-xs tracking-widest mb-0.5">
                   🎉 결과 공개!
                 </p>
-                <div className="flex items-baseline gap-2 mt-1">
+                <div className="flex items-baseline gap-2">
                   <span className="font-noto text-slate-400 text-xs">미션 장소</span>
                   <span className="font-noto text-slate-400 text-xs">:</span>
-                  <p className="font-jua text-3xl text-slate-700">{slot.label}</p>
+                  <p className="font-jua text-2xl text-slate-700">{slot.label}</p>
                 </div>
               </div>
 
-              <div className="p-5 flex flex-col gap-3">
+              <div className="px-4 py-3 flex flex-col gap-2">
                 {/* Place name */}
                 {slot.placeName && (
                   <div className="flex items-center gap-2">
@@ -341,14 +341,14 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
 
                 {/* ── Winner selection (hat / pin kinds) ───────────────────── */}
                 {slot.hasWinner && (
-                  <div className="flex flex-col gap-3 pt-1">
-                    <p className="font-noto text-slate-500 text-sm text-center">
+                  <div className="flex flex-col gap-2">
+                    <p className="font-noto text-slate-500 text-xs text-center">
                       GPT 판정 결과, 이긴 사람은?
                     </p>
-                    <div className="flex gap-3">
+                    <div className="flex gap-2">
                       <button
                         onClick={() => handleWinnerSelect('jinu')}
-                        className={`flex-1 py-3 rounded-2xl font-jua text-lg transition-all ${
+                        className={`flex-1 py-2.5 rounded-2xl font-jua text-base transition-all ${
                           localWinner === 'jinu'
                             ? 'text-white shadow-md'
                             : 'bg-sky-50 text-sky-400 border border-sky-200'
@@ -363,7 +363,7 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
                       </button>
                       <button
                         onClick={() => handleWinnerSelect('mini')}
-                        className={`flex-1 py-3 rounded-2xl font-jua text-lg transition-all ${
+                        className={`flex-1 py-2.5 rounded-2xl font-jua text-base transition-all ${
                           localWinner === 'mini'
                             ? 'text-white shadow-md'
                             : 'bg-pink-50 text-pink-400 border border-pink-200'
@@ -384,7 +384,7 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
                 {(!slot.hasWinner || localWinner !== null) && (
                   <motion.button
                     onClick={handleAdvance}
-                    className="w-full font-jua text-xl text-white py-4 rounded-2xl shadow-md active:scale-95 transition-transform mt-1"
+                    className="w-full font-jua text-lg text-white py-3 rounded-2xl shadow-md active:scale-95 transition-transform"
                     style={{ background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)' }}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
