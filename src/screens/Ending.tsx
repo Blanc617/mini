@@ -353,6 +353,12 @@ function rr(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: n
 }
 
 async function generateVideo(photoUrls: string[]): Promise<void> {
+  // 브라우저 지원 여부 확인
+  if (typeof MediaRecorder === 'undefined' || !HTMLCanvasElement.prototype.captureStream) {
+    alert('현재 브라우저에서는 영상 생성이 지원되지 않아요.\nChrome 브라우저에서 열어주세요 🙏');
+    return;
+  }
+
   const W = 540, H = 960;
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
@@ -364,7 +370,9 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
     const img = new Image(); img.onload = () => res(img); img.src = url;
   })));
 
-  const mimeType = MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' : 'video/webm';
+  // 지원 코덱 순서대로 시도
+  const MIME_CANDIDATES = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'];
+  const mimeType = MIME_CANDIDATES.find(m => MediaRecorder.isTypeSupported(m)) ?? 'video/webm';
   const stream = canvas.captureStream(30);
   const recorder = new MediaRecorder(stream, { mimeType });
   const chunks: Blob[] = [];
@@ -530,10 +538,17 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
       const blob = new Blob(chunks, { type: mimeType });
       const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
       const file = new File([blob], `mini-day-2026.${ext}`, { type: mimeType });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = file.name; a.click();
-      URL.revokeObjectURL(url);
+      // 모바일(카카오 인앱 등): Web Share API 우선
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: 'Happy Mini Day 🎉' });
+        } catch { /* 취소 */ }
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = file.name; a.click();
+        URL.revokeObjectURL(url);
+      }
       res();
     };
   });
