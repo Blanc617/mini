@@ -4,16 +4,17 @@
   color-scheme: light;
 }
 
-html, body {
-  background: #e0f2fe;
-}
-
 .font-jua { font-family: 'Jua', sans-serif; }
 .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── 라이트 모드 강제 고정 ────────────────────────────────────────────────── */
+html, body {
+  background: #e0f2fe !important;
+}
 
 /* ── phone-inner base (모바일): 높이 체인 확보 ─────────────────────────────── */
 .phone-outer {
@@ -24,6 +25,7 @@ html, body {
   height: 100%;
   overflow: hidden;
   position: relative;
+  background: #e0f2fe;
 }
 
 /* ── Desktop phone frame (Galaxy S26+) ───────────────────────────────────── */
