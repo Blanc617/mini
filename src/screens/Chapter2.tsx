@@ -142,7 +142,7 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
       )}
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="w-full max-w-sm mb-6 text-center">
+      <div className={`w-full max-w-sm text-center ${phase === 'result' ? 'mb-3' : 'mb-6'}`}>
         <p className="font-noto text-sky-500 text-sm font-bold text-center mb-1">CHAPTER 2 · 오늘 저녁 뭐 먹지?</p>
         <h2 className="font-jua text-2xl text-slate-700">캡슐 뽑기 🎰</h2>
         <p className="font-noto text-slate-500 text-sm mt-1">
@@ -247,10 +247,10 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
             transition={{ type: 'spring', stiffness: 160, delay: 0.1 }}
           >
             {/* Main result */}
-            <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border border-white/80 overflow-hidden mb-4">
-              {/* 음식점 이미지 — 정사각형 크롭 */}
+            <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border border-white/80 overflow-hidden">
+              {/* 음식점 이미지 */}
               {resultRestaurant?.imageUrl && (
-                <div className="w-full aspect-[4/3] overflow-hidden">
+                <div className="w-full overflow-hidden" style={{ height: 150 }}>
                   <img
                     src={resultRestaurant.imageUrl}
                     alt={resultRestaurant.name}
@@ -261,25 +261,25 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
 
               {/* 메뉴명 */}
               <div
-                className="px-5 pt-4 pb-3"
+                className="px-4 pt-3 pb-2"
                 style={{ background: 'linear-gradient(135deg, #e0f2fe, #bae6fd)' }}
               >
-                <p className="font-noto text-sky-400 text-xs tracking-widest mb-1">
+                <p className="font-noto text-sky-400 text-xs tracking-widest mb-0.5">
                   🍽️ 오늘 저녁은...
                 </p>
-                <p className="font-jua text-3xl text-slate-700">
+                <p className="font-jua text-2xl text-slate-700">
                   {resultRestaurant
                     ? `${resultRestaurant.emoji} ${resultRestaurant.menu}`
                     : '???'}
                 </p>
               </div>
 
-              <div className="px-5 py-4 flex flex-col gap-3">
+              <div className="px-4 py-3 flex flex-col gap-2">
                 {/* 식당명 + 위치 + 지도 링크 */}
                 {resultRestaurant?.name ? (
                   <div className="flex items-center justify-between">
                     <div className="flex items-baseline gap-2">
-                      <span className="font-jua text-xl text-slate-700">{resultRestaurant.name}</span>
+                      <span className="font-jua text-lg text-slate-700">{resultRestaurant.name}</span>
                       {resultRestaurant.intro && (
                         <span className="font-noto text-slate-400 text-xs">📍 {resultRestaurant.intro}</span>
                       )}
@@ -295,9 +295,7 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
                       </a>
                     )}
                   </div>
-                ) : (
-                  <p className="font-noto text-slate-400 text-sm">(식당 정보는 곧 공개)</p>
-                )}
+                ) : null}
 
                 {/* 추천 메뉴 */}
                 {resultRestaurant?.recommended && resultRestaurant.recommended.length > 0 && (
@@ -307,7 +305,7 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
                       <span
                         key={item}
                         className="font-noto text-xs text-sky-600"
-                        style={{ background: 'rgba(14,165,233,0.08)', border: '1px solid rgba(14,165,233,0.2)', borderRadius: 6, padding: '2px 8px' }}
+                        style={{ background: 'rgba(14,165,233,0.08)', border: '1px solid rgba(14,165,233,0.2)', borderRadius: 6, padding: '2px 7px' }}
                       >
                         {item}
                       </span>
@@ -317,7 +315,7 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
 
                 <button
                   onClick={() => advance('ch3')}
-                  className="w-full font-jua text-xl text-white py-4 rounded-2xl shadow-md active:scale-95 transition-transform mt-1"
+                  className="w-full font-jua text-lg text-white py-3 rounded-2xl shadow-md active:scale-95 transition-transform mt-1"
                   style={{ background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)' }}
                 >
                   다음 퀘스트로 →
@@ -325,7 +323,7 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
               </div>
             </div>
 
-            <p className="font-noto text-slate-500 text-sm text-center mt-3">
+            <p className="font-noto text-slate-400 text-xs text-center mt-2">
               식사 후 다음 퀘스트가 기다리고 있어요 👀
             </p>
           </motion.div>
