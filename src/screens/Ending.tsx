@@ -130,7 +130,7 @@ function TitleSlide({ photoUrls }: { photoUrls: string[] }) {
 
         {/* 폴라로이드 하단 텍스트 */}
         <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>
-          지누 × 미니
+          미니의 하루
         </span>
         <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>
           2026. 10. 17
@@ -189,7 +189,7 @@ function PhotoPolaroidSlide({ url, num, total }: { url: string; num: number; tot
         <div style={{ width: 220, height: 220, borderRadius: 2, overflow: 'hidden', marginBottom: 14 }}>
           <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
-        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>지누 × 미니</span>
+        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>미니의 하루</span>
         <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>2026. 10. 17</span>
       </div>
     </div>
@@ -286,7 +286,7 @@ function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
           ))}
         </div>
 
-        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>지누 × 미니</span>
+        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>미니의 하루</span>
         <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>2026. 10. 17</span>
         </div>{/* 폴라로이드 카드 끝 */}
       </div>{/* 스탬프+카드 wrapper 끝 */}
@@ -485,7 +485,7 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
     // 캡션
     const relPY = -cH / 2 + 20 + pS;
     ctx.fillStyle = '#5c3d1e'; ctx.font = '18px "Jua", sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('지누 × 미니', 0, relPY + 26);
+    ctx.fillText('미니의 하루', 0, relPY + 26);
     ctx.fillStyle = 'rgba(120,80,40,0.65)'; ctx.font = '11px "Noto Sans KR", sans-serif';
     ctx.fillText('2026. 10. 17', 0, relPY + 44);
     ctx.restore();
