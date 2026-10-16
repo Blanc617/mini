@@ -52,6 +52,26 @@ function TitleSlide() {
         ))}
       </div>
 
+      {/* 생일 배지 — 상단 */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+        style={{
+          background: 'linear-gradient(135deg, #fb923c, #f97316)',
+          borderRadius: 999,
+          padding: '7px 18px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+          boxShadow: '0 4px 12px rgba(249,115,22,0.3)',
+          marginBottom: 20,
+        }}
+      >
+        <span style={{ fontSize: 16 }}>🎂</span>
+        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 15, color: 'white', letterSpacing: 1 }}>미니의 생일</span>
+      </motion.div>
+
       {/* 폴라로이드 카드 */}
       <motion.div
         initial={{ opacity: 0, y: 20, rotate: -2 }}
@@ -93,26 +113,6 @@ function TitleSlide() {
         <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>
           2026. 10. 17
         </span>
-      </motion.div>
-
-      {/* 생일 배지 */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.5, type: 'spring', stiffness: 160 }}
-        style={{
-          marginTop: 24,
-          background: 'linear-gradient(135deg, #fb923c, #f97316)',
-          borderRadius: 999,
-          padding: '7px 18px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          boxShadow: '0 4px 12px rgba(249,115,22,0.3)',
-        }}
-      >
-        <span style={{ fontSize: 16 }}>🎂</span>
-        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 15, color: 'white', letterSpacing: 1 }}>미니의 생일</span>
       </motion.div>
 
       {/* 서브텍스트 */}
