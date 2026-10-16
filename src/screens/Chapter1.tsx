@@ -273,7 +273,7 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
 
   return (
     <div
-      className="h-full flex flex-col items-center justify-start p-4 pt-8 relative overflow-hidden"
+      className="h-full flex flex-col items-center justify-start p-4 pt-8 relative overflow-y-auto"
       style={{ background: 'linear-gradient(160deg, #e0f2fe 0%, #bae6fd 50%, #f0f9ff 100%)' }}
     >
       {/* Back button — shown in pick and revealed phases, not during animation */}
@@ -296,7 +296,7 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
       <svg
         viewBox="0 0 300 360"
         className="w-full max-w-sm mx-auto"
-        style={{ userSelect: 'none' }}
+        style={{ userSelect: 'none', maxHeight: isRevealed ? 220 : undefined }}
       >
         {/* ── Vertical lanes ── */}
         {Array.from({ length: LANES }, (_, i) => (
