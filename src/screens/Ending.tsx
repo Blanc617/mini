@@ -430,6 +430,129 @@ const CONFETTI = Array.from({ length: 22 }, (_, i) => ({
   rotate: (i * 47) % 360,
 }));
 
+// ─── Video generation ────────────────────────────────────────────────────────
+
+function rr(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+async function generateVideo(photoUrls: string[]): Promise<void> {
+  const W = 540, H = 960;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d')!;
+
+  await document.fonts.ready;
+
+  const images = await Promise.all(photoUrls.map(url => new Promise<HTMLImageElement>(res => {
+    const img = new Image(); img.onload = () => res(img); img.src = url;
+  })));
+
+  const mimeType = MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' : 'video/webm';
+  const stream = canvas.captureStream(30);
+  const recorder = new MediaRecorder(stream, { mimeType });
+  const chunks: Blob[] = [];
+  recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+  recorder.start(100);
+
+  function drawBg() {
+    ctx.fillStyle = '#fef3e2';
+    ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 7; i++) {
+      const x = 24 + i * (W - 48) / 6;
+      ctx.fillStyle = 'rgba(180,140,100,0.25)';
+      rr(ctx, x - 7, 14, 14, 10, 3); ctx.fill();
+      rr(ctx, x - 7, H - 24, 14, 10, 3); ctx.fill();
+    }
+  }
+
+  function drawPolaroid(img: HTMLImageElement) {
+    drawBg();
+    // Birthday stamp
+    ctx.strokeStyle = 'rgba(140,80,30,0.45)'; ctx.lineWidth = 2;
+    rr(ctx, W / 2 - 88, 110, 176, 34, 6); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.fill();
+    ctx.fillStyle = 'rgba(120,60,20,0.85)';
+    ctx.font = 'bold 13px "Noto Sans KR", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🎂  MINI\'S BIRTHDAY', W / 2, 133);
+    // Card shadow
+    ctx.shadowColor = 'rgba(0,0,0,0.2)'; ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
+    const cW = 260, cH = 320, cX = (W - cW) / 2, cY = 165;
+    ctx.fillStyle = 'white'; rr(ctx, cX, cY, cW, cH, 4); ctx.fill();
+    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+    // Photo (cover fit inside 220×220)
+    const pS = 220, pX = cX + 20, pY = cY + 20;
+    ctx.save(); ctx.beginPath(); ctx.rect(pX, pY, pS, pS); ctx.clip();
+    const s = Math.max(pS / img.width, pS / img.height);
+    ctx.drawImage(img, pX + (pS - img.width * s) / 2, pY + (pS - img.height * s) / 2, img.width * s, img.height * s);
+    ctx.restore();
+    // Caption
+    ctx.fillStyle = '#5c3d1e'; ctx.font = '18px "Jua", sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('지누 × 미니', W / 2, pY + pS + 26);
+    ctx.fillStyle = 'rgba(120,80,40,0.65)'; ctx.font = '11px "Noto Sans KR", sans-serif';
+    ctx.fillText('2026. 10. 17', W / 2, pY + pS + 44);
+    // Subtext
+    ctx.fillStyle = 'rgba(140,100,60,0.6)'; ctx.font = '11px "Noto Sans KR", sans-serif';
+    ctx.fillText('오늘 하루의 기록 🎞️', W / 2, cY + cH + 28);
+  }
+
+  function drawPhoto(img: HTMLImageElement) {
+    ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+    const s = Math.min(W / img.width, H / img.height);
+    ctx.drawImage(img, (W - img.width * s) / 2, (H - img.height * s) / 2, img.width * s, img.height * s);
+  }
+
+  const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
+  const CYCLE = 700;
+
+  // Title slide: cycle photos for 3s
+  const cycles = Math.ceil(3000 / CYCLE);
+  for (let i = 0; i < cycles; i++) {
+    drawPolaroid(images[i % images.length]);
+    await wait(CYCLE);
+  }
+
+  // Photo slides: 2s each
+  for (const img of images) {
+    drawPhoto(img);
+    await wait(2000);
+  }
+
+  recorder.stop();
+
+  await new Promise<void>(res => {
+    recorder.onstop = async () => {
+      const blob = new Blob(chunks, { type: mimeType });
+      const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
+      const file = new File([blob], `mini-day-2026.${ext}`, { type: mimeType });
+      try {
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: 'Happy Mini Day 🎉' });
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = file.name; a.click();
+          URL.revokeObjectURL(url);
+        }
+      } catch { /* 취소 */ }
+      res();
+    };
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 interface SummaryScreenProps {
   state: ScreenProps['state'];
   resetState: () => void;
@@ -439,6 +562,7 @@ interface SummaryScreenProps {
 
 function SummaryScreen({ state, resetState, goBack, photoUrls }: SummaryScreenProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
   const restaurant = state.ch2.restaurantId ? fixedRestaurant : null;
   const slot = rouletteSlots.find((s) => s.id === state.ch3.slotId);
   const cardMap = new Map(cards.map((c) => [c.id, c]));
@@ -573,6 +697,20 @@ function SummaryScreen({ state, resetState, goBack, photoUrls }: SummaryScreenPr
               />
             ))}
           </div>
+          {/* 영상 만들기 버튼 */}
+          <button
+            onClick={async () => {
+              if (isGenerating) return;
+              setIsGenerating(true);
+              await generateVideo(photoUrls);
+              setIsGenerating(false);
+            }}
+            disabled={isGenerating}
+            style={{ width: '100%', fontFamily: 'Jua, sans-serif', fontSize: 15, color: 'white', background: isGenerating ? 'rgba(14,165,233,0.5)' : 'linear-gradient(135deg, #38bdf8, #0ea5e9)', border: 'none', borderRadius: 12, padding: '11px 0', cursor: isGenerating ? 'default' : 'pointer', marginTop: 8, boxShadow: '0 4px 12px rgba(14,165,233,0.3)' }}
+          >
+            {isGenerating ? '🎬 영상 만드는 중...' : '🎬 폴라로이드 영상 만들기'}
+          </button>
+
           {/* 저장 / 공유 버튼 */}
           <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
             <button
