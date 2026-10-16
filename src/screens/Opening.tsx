@@ -64,25 +64,27 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
     >
       {/* 떠다니는 이모지 파티클 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <style>{`
+          @keyframes float-up {
+            0%   { transform: translateY(0) translateX(0);    opacity: 0; }
+            8%   { opacity: 0.7; }
+            88%  { opacity: 0.7; }
+            100% { transform: translateY(-110vh) translateX(16px); opacity: 0; }
+          }
+        `}</style>
         {PARTICLES.map((p) => (
-          <motion.div
+          <div
             key={p.id}
             className="absolute select-none"
-            style={{ left: p.x, bottom: '-8%', fontSize: p.size }}
-            animate={{
-              y: [0, -900],
-              x: [0, 12, -8, 16, 0],
-              opacity: [0, 0.7, 0.7, 0],
-            }}
-            transition={{
-              duration: p.duration,
-              delay: p.delay,
-              repeat: Infinity,
-              ease: 'linear',
+            style={{
+              left: p.x,
+              bottom: '-8%',
+              fontSize: p.size,
+              animation: `float-up ${p.duration}s ${p.delay}s infinite linear`,
             }}
           >
             {p.emoji}
-          </motion.div>
+          </div>
         ))}
       </div>
 
