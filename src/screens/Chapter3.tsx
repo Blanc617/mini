@@ -161,7 +161,7 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
       )}
 
       {/* ── Header ───────────────────────────────────────────────────────────── */}
-      <div className="w-full max-w-sm mb-5 text-center">
+      <div className={`w-full max-w-sm text-center ${phase === 'revealed' ? 'mb-2' : 'mb-5'}`}>
         <p className="font-noto text-sky-500 text-sm font-bold text-center mb-1">CHAPTER 3 · 오늘의 미션</p>
         <h2 className="font-jua text-2xl text-slate-700">룰렛 돌리기 🎡</h2>
         {phase === 'idle' && (
@@ -176,10 +176,10 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
       </div>
 
       {/* ── Wheel ────────────────────────────────────────────────────────────── */}
-      <div className="relative flex items-center justify-center mb-4">
+      <div className="relative flex items-center justify-center mb-3">
         <svg
-          width="300"
-          height="300"
+          width={phase === 'revealed' ? 220 : 300}
+          height={phase === 'revealed' ? 220 : 300}
           viewBox="0 0 300 300"
           style={{ display: 'block', filter: 'drop-shadow(0 8px 24px rgba(14,165,233,0.18))' }}
         >
