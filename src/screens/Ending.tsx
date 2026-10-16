@@ -150,6 +150,52 @@ function TitleSlide({ photoUrls }: { photoUrls: string[] }) {
   );
 }
 
+// ─── Photo Polaroid Slide ────────────────────────────────────────────────────
+
+function PhotoPolaroidSlide({ url, num, total }: { url: string; num: number; total: number }) {
+  return (
+    <div style={{
+      width: '100%', height: '100%',
+      background: 'linear-gradient(160deg, #fdf6ec 0%, #fef3e2 60%, #fdf0e0 100%)',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {/* 필름 그레인 */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none',
+        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.04\'/%3E%3C/svg%3E")',
+        opacity: 0.6,
+      }} />
+      {/* 상단 필름 구멍 */}
+      <div style={{ position: 'absolute', top: 18, left: 0, right: 0, display: 'flex', justifyContent: 'space-around', paddingInline: 12 }}>
+        {[...Array(7)].map((_, i) => <div key={i} style={{ width: 14, height: 10, borderRadius: 3, background: 'rgba(180,140,100,0.25)' }} />)}
+      </div>
+      {/* 하단 필름 구멍 */}
+      <div style={{ position: 'absolute', bottom: 18, left: 0, right: 0, display: 'flex', justifyContent: 'space-around', paddingInline: 12 }}>
+        {[...Array(7)].map((_, i) => <div key={i} style={{ width: 14, height: 10, borderRadius: 3, background: 'rgba(180,140,100,0.25)' }} />)}
+      </div>
+
+      {/* 사진 번호 */}
+      <div style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 12, color: 'rgba(120,80,40,0.6)', letterSpacing: '0.15em', marginBottom: 16 }}>
+        {num} / {total}
+      </div>
+
+      {/* 폴라로이드 카드 */}
+      <div style={{
+        background: 'white', borderRadius: 4, padding: '20px 20px 52px',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', width: 260,
+        transform: 'rotate(1.5deg)',
+      }}>
+        <div style={{ width: 220, height: 220, borderRadius: 2, overflow: 'hidden', marginBottom: 14 }}>
+          <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </div>
+        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>지누 × 미니</span>
+        <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>2026. 10. 17</span>
+      </div>
+    </div>
+  );
+}
+
 // ─── Slideshow ────────────────────────────────────────────────────────────────
 
 interface SlideshowProps {
@@ -256,15 +302,7 @@ function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
           {isTitle ? (
             <TitleSlide photoUrls={photoUrls} />
           ) : (
-            <img
-              src={photoUrl!}
-              alt={`사진 ${index}`}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-              }}
-            />
+            <PhotoPolaroidSlide url={photoUrl!} num={index} total={photoUrls.length} />
           )}
         </motion.div>
       </AnimatePresence>
