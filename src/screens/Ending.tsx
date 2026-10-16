@@ -53,24 +53,24 @@ function TitleSlide() {
         ))}
       </div>
 
-      {/* 생일 배지 — 상단 */}
+      {/* 생일 스탬프 — 상단 */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15 }}
+        initial={{ opacity: 0, scale: 0.8, rotate: -3 }}
+        animate={{ opacity: 1, scale: 1, rotate: -3 }}
+        transition={{ delay: 0.15, type: 'spring', stiffness: 160 }}
         style={{
-          background: 'linear-gradient(135deg, #fb923c, #f97316)',
-          borderRadius: 999,
-          padding: '7px 18px',
+          border: '2px solid rgba(140,80,30,0.45)',
+          borderRadius: 6,
+          padding: '6px 16px',
           display: 'flex',
           alignItems: 'center',
           gap: 6,
-          boxShadow: '0 4px 12px rgba(249,115,22,0.3)',
-          marginBottom: 20,
+          marginBottom: 18,
+          background: 'rgba(255,255,255,0.5)',
         }}
       >
-        <span style={{ fontSize: 16 }}>🎂</span>
-        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 15, color: 'white', letterSpacing: 1 }}>미니의 생일</span>
+        <span style={{ fontSize: 14 }}>🎂</span>
+        <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 13, fontWeight: 700, color: 'rgba(120,60,20,0.8)', letterSpacing: '0.15em' }}>MINI'S BIRTHDAY</span>
       </motion.div>
 
       {/* 폴라로이드 카드 */}
