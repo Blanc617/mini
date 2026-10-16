@@ -167,10 +167,6 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
                 </div>
               </div>
 
-              {/* 하단 장식 띠 */}
-              <div style={{ background: 'linear-gradient(135deg, #a5f3fc, #7dd3fc, #38bdf8)', padding: '10px 0', textAlign: 'center', letterSpacing: 6, fontSize: 16 }}>
-                🎀 🎉 🎈 🎊 🎂
-              </div>
             </motion.div>
 
             {/* 입장 버튼 */}
