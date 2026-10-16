@@ -248,17 +248,26 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
           >
             {/* Main result */}
             <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border border-white/80 overflow-hidden">
-              {/* 음식점 이미지 3장 */}
+              {/* 음식점 이미지 — 큰 사진 1장 + 작은 사진 2장 */}
               {resultRestaurant?.imageUrls && resultRestaurant.imageUrls.length > 0 && (
-                <div className="flex w-full overflow-hidden" style={{ height: 110 }}>
-                  {resultRestaurant.imageUrls.map((url, i) => (
-                    <img
-                      key={i}
-                      src={url}
-                      alt={`${resultRestaurant.name} ${i + 1}`}
-                      style={{ flex: 1, minWidth: 0, objectFit: 'cover', borderRight: i < 2 ? '2px solid rgba(255,255,255,0.6)' : 'none' }}
-                    />
-                  ))}
+                <div className="w-full flex flex-col" style={{ gap: 2 }}>
+                  <img
+                    src={resultRestaurant.imageUrls[0]}
+                    alt={resultRestaurant.name}
+                    style={{ width: '100%', height: 180, objectFit: 'cover' }}
+                  />
+                  {resultRestaurant.imageUrls.length > 1 && (
+                    <div className="flex" style={{ gap: 2 }}>
+                      {resultRestaurant.imageUrls.slice(1).map((url, i) => (
+                        <img
+                          key={i}
+                          src={url}
+                          alt={`${resultRestaurant.name} ${i + 2}`}
+                          style={{ flex: 1, minWidth: 0, height: 100, objectFit: 'cover' }}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
