@@ -148,7 +148,7 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
 
               {/* 본문 */}
               <div style={{ padding: '20px 24px 18px' }}>
-                <p className="font-jua text-center text-sky-400 mb-1" style={{ fontSize: 15 }}>To. 미니 💌</p>
+                <p className="font-jua text-left text-sky-400 mb-1" style={{ fontSize: 15 }}>To. 미니 💌</p>
                 <p className="font-noto text-sky-300 text-xs text-center tracking-widest mb-3">INVITATION</p>
 
                 <p className="font-jua text-center text-slate-700 leading-relaxed mb-2" style={{ fontSize: 17 }}>
@@ -161,20 +161,21 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
                   지누가 미니만을 위해<br />준비했어요 💙
                 </p>
 
-                <div className="flex items-center gap-2 mt-4 justify-center">
-                  <div style={{ flex: 1, height: 1, background: 'linear-gradient(to right, transparent, #bae6fd)' }} />
-                  <span className="font-noto text-xs text-sky-400">from. 지누 🩵</span>
-                  <div style={{ flex: 1, height: 1, background: 'linear-gradient(to left, transparent, #bae6fd)' }} />
-                </div>
-
-                {/* 호스트 배지 */}
-                <div className="flex items-center gap-2 mt-3 bg-sky-50/70 rounded-xl px-3 py-2">
-                  <span className="text-base">🎩</span>
-                  <p className="font-noto text-xs text-slate-400 leading-none">오늘의 호스트</p>
-                  <p className="font-jua text-sm text-slate-600 leading-none ml-1">지누</p>
-                </div>
+                <p className="font-noto text-right text-xs text-sky-400 mt-4">from. 지누 🩵</p>
               </div>
 
+            </motion.div>
+
+            {/* 호스트 배지 */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.65 }}
+              className="flex items-center gap-2 bg-white/50 backdrop-blur-sm border border-white/70 rounded-full px-4 py-2 mb-5"
+            >
+              <span className="text-base">🎩</span>
+              <p className="font-noto text-xs text-slate-400">오늘의 호스트</p>
+              <p className="font-jua text-sm text-slate-600">지누</p>
             </motion.div>
 
             {/* 입장 버튼 */}
