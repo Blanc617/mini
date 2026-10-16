@@ -196,6 +196,105 @@ function PhotoPolaroidSlide({ url, num, total }: { url: string; num: number; tot
   );
 }
 
+// ─── Film Title Slide ─────────────────────────────────────────────────────────
+
+function FilmTitleSlide({ onDone }: { onDone: () => void }) {
+  useEffect(() => {
+    const id = setTimeout(onDone, TITLE_SLIDE_DURATION);
+    return () => clearTimeout(id);
+  }, [onDone]);
+
+  const holes = Array.from({ length: 24 });
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35 }}
+      style={{ position: 'absolute', inset: 0, zIndex: 20, background: '#0d0800',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer' }}
+      onClick={onDone}
+    >
+      {/* 좌측 필름 스트립 */}
+      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 40, overflow: 'hidden',
+        background: '#1a0f00', borderRight: '1px solid rgba(255,200,100,0.08)' }}>
+        <motion.div
+          animate={{ y: [0, -240] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }}
+          style={{ display: 'flex', flexDirection: 'column' }}
+        >
+          {holes.map((_, i) => (
+            <div key={i} style={{ width: 40, height: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <div style={{ width: 14, height: 9, borderRadius: 2, background: 'rgba(255,210,130,0.18)', border: '1px solid rgba(255,200,100,0.12)' }} />
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* 우측 필름 스트립 */}
+      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 40, overflow: 'hidden',
+        background: '#1a0f00', borderLeft: '1px solid rgba(255,200,100,0.08)' }}>
+        <motion.div
+          animate={{ y: [0, -240] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }}
+          style={{ display: 'flex', flexDirection: 'column' }}
+        >
+          {holes.map((_, i) => (
+            <div key={i} style={{ width: 40, height: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <div style={{ width: 14, height: 9, borderRadius: 2, background: 'rgba(255,210,130,0.18)', border: '1px solid rgba(255,200,100,0.12)' }} />
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* 중앙 텍스트 */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '0 56px', textAlign: 'center' }}>
+        <motion.span
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, type: 'spring', stiffness: 160 }}
+          style={{ fontSize: 52, lineHeight: 1 }}
+        >🎂</motion.span>
+
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.42, duration: 0.55 }}
+          style={{ fontFamily: 'Jua, sans-serif', fontSize: 38, color: '#fef3c7', lineHeight: 1.25, margin: 0 }}
+        >
+          Happy<br />Mini Day
+        </motion.p>
+
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.75, duration: 0.45 }}
+          style={{ width: 72, height: 1, background: 'rgba(255,200,100,0.35)', margin: '6px 0' }}
+        />
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9, duration: 0.4 }}
+          style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 13, color: 'rgba(255,200,100,0.65)', letterSpacing: '0.22em', margin: 0 }}
+        >
+          2026. 10. 17
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.4 }}
+          transition={{ delay: 1.6, duration: 0.5 }}
+          style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(255,200,100,0.5)', letterSpacing: '0.15em', marginTop: 14, margin: 0 }}
+        >
+          tap to skip
+        </motion.p>
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── Slideshow ────────────────────────────────────────────────────────────────
 
 interface SlideshowProps {
@@ -205,6 +304,7 @@ interface SlideshowProps {
 }
 
 function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
+  const [showTitle, setShowTitle] = useState(true);
   const [photoIdx, setPhotoIdx] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -217,10 +317,10 @@ function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
   }, [photoUrls.length, onEnd]);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || showTitle) return;
     timerRef.current = setTimeout(goNext, SLIDE_DURATION);
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [photoIdx, paused, goNext]);
+  }, [photoIdx, paused, showTitle, goNext]);
 
   function handleTap(e: React.MouseEvent<HTMLDivElement>) {
     const x = e.clientX;
@@ -240,6 +340,11 @@ function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
         background: 'linear-gradient(160deg, #fdf6ec 0%, #fef3e2 60%, #fdf0e0 100%)' }}
       onClick={handleTap}
     >
+      {/* 롤 필름 타이틀 슬라이드 */}
+      <AnimatePresence>
+        {showTitle && <FilmTitleSlide key="film-title" onDone={() => setShowTitle(false)} />}
+      </AnimatePresence>
+
       {/* 필름 그레인 */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none',
         backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.04\'/%3E%3C/svg%3E")',
@@ -526,6 +631,57 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
       }
       requestAnimationFrame(frame);
     });
+
+  // ── 타이틀 슬라이드 (롤 필름 스타일) ──────────────────────────
+  function drawFilmTitle(elapsed: number) {
+    // 어두운 배경
+    ctx.fillStyle = '#0d0800';
+    ctx.fillRect(0, 0, W, H);
+    // 좌측 필름 스트립
+    ctx.fillStyle = '#1a0f00';
+    ctx.fillRect(0, 0, 56, H);
+    ctx.fillRect(W - 56, 0, 56, H);
+    // 필름 구멍 (스크롤 효과: elapsed 기반 offset)
+    const offset = (elapsed * 0.24) % 32;
+    for (let row = -1; row < H / 32 + 1; row++) {
+      const y = row * 32 + offset;
+      ctx.fillStyle = 'rgba(255,210,130,0.18)';
+      rr(ctx, 14, y + 11, 20, 12, 2); ctx.fill();
+      rr(ctx, W - 34, y + 11, 20, 12, 2); ctx.fill();
+    }
+    // fade-in progress (0→1 in first 600ms)
+    const alpha = Math.min(elapsed / 600, 1);
+    ctx.globalAlpha = alpha;
+    // 케이크 이모지
+    ctx.font = '72px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🎂', W / 2, H / 2 - 80);
+    // Happy Mini Day
+    ctx.fillStyle = '#fef3c7';
+    ctx.font = 'bold 52px "Jua", sans-serif';
+    ctx.fillText('Happy', W / 2, H / 2 - 8);
+    ctx.fillText('Mini Day', W / 2, H / 2 + 54);
+    // 구분선
+    ctx.fillStyle = 'rgba(255,200,100,0.35)';
+    ctx.fillRect(W / 2 - 48, H / 2 + 72, 96, 1);
+    // 날짜
+    ctx.fillStyle = 'rgba(255,200,100,0.65)';
+    ctx.font = '18px "Noto Sans KR", sans-serif';
+    ctx.fillText('2026. 10. 17', W / 2, H / 2 + 94);
+    ctx.globalAlpha = 1;
+  }
+
+  // 타이틀: TITLE_SLIDE_DURATION 동안 drawFilmTitle 루프
+  await animateFade(TITLE_SLIDE_DURATION, t => drawFilmTitle(t * TITLE_SLIDE_DURATION));
+  // 타이틀 → 폴라로이드 페이드 전환 (400ms)
+  await animateFade(400, t => {
+    drawFilmTitle(TITLE_SLIDE_DURATION);
+    ctx.globalAlpha = t;
+    ctx.fillStyle = '#0d0800';
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalAlpha = 1;
+  });
+  // ── 폴라로이드 슬라이드 ────────────────────────────────────────
 
   for (let i = 0; i < images.length; i++) {
     const prev = images[i - 1];
