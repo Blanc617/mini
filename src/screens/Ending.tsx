@@ -23,94 +23,87 @@ function TitleSlide() {
       style={{
         width: '100%',
         height: '100%',
-        background: 'linear-gradient(160deg, #0a0f1a 0%, #0c1a2e 60%, #0f2744 100%)',
+        background: 'linear-gradient(160deg, #fdf6ec 0%, #fef3e2 60%, #fdf0e0 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 0,
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* 별 파티클 */}
-      {[...Array(18)].map((_, i) => (
-        <motion.div
-          key={i}
-          style={{
-            position: 'absolute',
-            width: i % 3 === 0 ? 3 : 2,
-            height: i % 3 === 0 ? 3 : 2,
-            borderRadius: '50%',
-            background: 'white',
-            left: `${(i * 17 + 5) % 100}%`,
-            top: `${(i * 13 + 8) % 100}%`,
-          }}
-          animate={{ opacity: [0.2, 1, 0.2] }}
-          transition={{ duration: 2 + (i % 3), repeat: Infinity, delay: i * 0.15 }}
-        />
-      ))}
+      {/* 필름 그레인 오버레이 */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.04\'/%3E%3C/svg%3E")',
+        opacity: 0.6,
+      }} />
 
-      {/* 날짜 */}
-      <motion.span
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+      {/* 상단 필름 구멍 */}
+      <div style={{ position: 'absolute', top: 18, left: 0, right: 0, display: 'flex', justifyContent: 'space-around', paddingInline: 12 }}>
+        {[...Array(7)].map((_, i) => (
+          <div key={i} style={{ width: 14, height: 10, borderRadius: 3, background: 'rgba(180,140,100,0.25)' }} />
+        ))}
+      </div>
+      {/* 하단 필름 구멍 */}
+      <div style={{ position: 'absolute', bottom: 18, left: 0, right: 0, display: 'flex', justifyContent: 'space-around', paddingInline: 12 }}>
+        {[...Array(7)].map((_, i) => (
+          <div key={i} style={{ width: 14, height: 10, borderRadius: 3, background: 'rgba(180,140,100,0.25)' }} />
+        ))}
+      </div>
+
+      {/* 폴라로이드 카드 */}
+      <motion.div
+        initial={{ opacity: 0, y: 20, rotate: -2 }}
+        animate={{ opacity: 1, y: 0, rotate: -2 }}
+        transition={{ delay: 0.2, type: 'spring', stiffness: 140 }}
         style={{
-          fontFamily: 'Noto Sans KR, sans-serif',
-          fontSize: 13,
-          color: 'rgba(125,211,252,0.8)',
-          letterSpacing: '0.25em',
-          marginBottom: 20,
+          background: 'white',
+          borderRadius: 4,
+          padding: '20px 20px 48px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 0,
+          width: 210,
         }}
       >
-        2026 · 10 · 17
-      </motion.span>
+        {/* 사진 영역 (빈 프레임) */}
+        <div style={{
+          width: 170,
+          height: 170,
+          background: 'linear-gradient(135deg, #fde8c8, #fcd5a0)',
+          borderRadius: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 14,
+          gap: 6,
+        }}>
+          <span style={{ fontSize: 40 }}>📸</span>
+          <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.7)', letterSpacing: '0.1em' }}>오늘의 필름</span>
+        </div>
 
-      {/* 메인 타이틀 */}
-      <motion.span
-        initial={{ opacity: 0, scale: 0.88 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.35, type: 'spring', stiffness: 160 }}
-        style={{
-          fontFamily: 'Jua, sans-serif',
-          fontSize: 'clamp(2.2rem, 9vw, 3.8rem)',
-          color: 'white',
-          textAlign: 'center',
-          lineHeight: 1.15,
-          marginBottom: 12,
-        }}
-      >
-        지누 × 미니
-      </motion.span>
+        {/* 폴라로이드 하단 텍스트 */}
+        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>
+          지누 × 미니
+        </span>
+        <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>
+          2026. 10. 17
+        </span>
+      </motion.div>
 
-      {/* 서브 */}
-      <motion.span
+      {/* 아래 서브텍스트 */}
+      <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.55 }}
-        style={{
-          fontFamily: 'Noto Sans KR, sans-serif',
-          fontSize: 14,
-          color: 'rgba(186,230,253,0.7)',
-          letterSpacing: '0.15em',
-          marginBottom: 36,
-        }}
+        style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 12, color: 'rgba(140,100,60,0.7)', marginTop: 28, letterSpacing: '0.15em' }}
       >
-        오늘 하루의 기록 💙
-      </motion.span>
-
-      {/* 구분선 */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: 0.7, duration: 0.5 }}
-        style={{
-          width: 60,
-          height: 1,
-          background: 'linear-gradient(to right, transparent, rgba(125,211,252,0.6), transparent)',
-        }}
-      />
+        오늘 하루의 기록 🎞️
+      </motion.p>
     </div>
   );
 }
