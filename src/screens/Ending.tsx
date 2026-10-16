@@ -536,16 +536,10 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
       const blob = new Blob(chunks, { type: mimeType });
       const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
       const file = new File([blob], `mini-day-2026.${ext}`, { type: mimeType });
-      try {
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({ files: [file], title: 'Happy Mini Day 🎉' });
-        } else {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url; a.download = file.name; a.click();
-          URL.revokeObjectURL(url);
-        }
-      } catch { /* 취소 */ }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = file.name; a.click();
+      URL.revokeObjectURL(url);
       res();
     };
   });
@@ -708,7 +702,7 @@ function SummaryScreen({ state, resetState, goBack, photoUrls }: SummaryScreenPr
             disabled={isGenerating}
             style={{ width: '100%', fontFamily: 'Jua, sans-serif', fontSize: 15, color: 'white', background: isGenerating ? 'rgba(14,165,233,0.5)' : 'linear-gradient(135deg, #38bdf8, #0ea5e9)', border: 'none', borderRadius: 12, padding: '11px 0', cursor: isGenerating ? 'default' : 'pointer', marginTop: 8, boxShadow: '0 4px 12px rgba(14,165,233,0.3)' }}
           >
-            {isGenerating ? '🎬 영상 만드는 중...' : '🎬 폴라로이드 영상 만들기'}
+            {isGenerating ? '⏳ 영상 생성 중...' : '🎬 폴라로이드 영상 다운로드'}
           </button>
 
           {/* 저장 / 공유 버튼 */}
