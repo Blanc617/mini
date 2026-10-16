@@ -18,7 +18,15 @@ const CONTROLS_HIDE_DELAY = 2000;
 
 // ─── Title Slide (index 0) ────────────────────────────────────────────────────
 
-function TitleSlide() {
+function TitleSlide({ photoUrls }: { photoUrls: string[] }) {
+  const [photoIdx, setPhotoIdx] = useState(0);
+
+  useEffect(() => {
+    if (photoUrls.length <= 1) return;
+    const id = setInterval(() => setPhotoIdx(p => (p + 1) % photoUrls.length), 700);
+    return () => clearInterval(id);
+  }, [photoUrls]);
+
   return (
     <div
       style={{
@@ -81,30 +89,43 @@ function TitleSlide() {
         style={{
           background: 'white',
           borderRadius: 4,
-          padding: '20px 20px 48px',
+          padding: '20px 20px 52px',
           boxShadow: '0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 0,
-          width: 210,
+          width: 260,
         }}
       >
-        {/* 사진 영역 (빈 프레임) */}
+        {/* 사진 영역 */}
         <div style={{
-          width: 170,
-          height: 170,
-          background: 'linear-gradient(135deg, #fde8c8, #fcd5a0)',
+          width: 220,
+          height: 220,
           borderRadius: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
+          overflow: 'hidden',
           marginBottom: 14,
-          gap: 6,
+          position: 'relative',
+          background: 'linear-gradient(135deg, #fde8c8, #fcd5a0)',
         }}>
-          <span style={{ fontSize: 40 }}>📸</span>
-          <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.7)', letterSpacing: '0.1em' }}>오늘의 필름</span>
+          {photoUrls.length > 0 ? (
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={photoIdx}
+                src={photoUrls[photoIdx]}
+                alt="오늘의 사진"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
+              />
+            </AnimatePresence>
+          ) : (
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+              <span style={{ fontSize: 40 }}>📸</span>
+              <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.7)' }}>오늘의 필름</span>
+            </div>
+          )}
         </div>
 
         {/* 폴라로이드 하단 텍스트 */}
@@ -233,7 +254,7 @@ function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
           style={{ position: 'absolute', inset: 0 }}
         >
           {isTitle ? (
-            <TitleSlide />
+            <TitleSlide photoUrls={photoUrls} />
           ) : (
             <img
               src={photoUrl!}
