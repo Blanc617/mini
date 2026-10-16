@@ -296,18 +296,6 @@ function UploadUI({ wasRefreshed: _wasRefreshed, onPhotos }: UploadProps) {
       >
         오늘 찍은 사진을 골라주세요 📷
       </p>
-      <p
-        style={{
-          fontFamily: 'Noto Sans KR, sans-serif',
-          fontSize: 13,
-          color: '#64748b',
-          marginBottom: 24,
-          lineHeight: 1.5,
-        }}
-      >
-        지누 폰에서 오늘 사진을 선택하세요
-      </p>
-
       {/* Upload button wrapping file input */}
       <label
         style={{
