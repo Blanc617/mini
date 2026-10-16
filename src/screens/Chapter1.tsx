@@ -273,7 +273,7 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
 
   return (
     <div
-      className="h-full flex flex-col items-center justify-start p-4 pt-8 relative overflow-y-auto"
+      className="h-full flex flex-col items-center justify-start p-4 pt-6 relative overflow-hidden"
       style={{ background: 'linear-gradient(160deg, #e0f2fe 0%, #bae6fd 50%, #f0f9ff 100%)' }}
     >
       {/* Back button — shown in pick and revealed phases, not during animation */}
@@ -282,9 +282,9 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
       )}
 
       {/* Header */}
-      <div className="w-full max-w-sm mb-4">
+      <div className={`w-full max-w-sm ${isRevealed ? 'mb-2' : 'mb-4'}`}>
         <p className="font-noto text-sky-500 text-sm font-bold text-center mb-1">CHAPTER 1 · 첫 번째 활동 뽑기</p>
-        <h2 className="font-jua text-2xl text-slate-700 text-center">사다리타기 🪜</h2>
+        <h2 className={`font-jua text-slate-700 text-center ${isRevealed ? 'text-xl' : 'text-2xl'}`}>사다리타기 🪜</h2>
         <p className="font-noto text-slate-500 text-sm text-center mt-1">
           {phase === 'idle' && '1~5번 중 하나를 골라 사다리를 타고 내려가요'}
           {phase === 'animating' && '내려가는 중...!'}
@@ -296,7 +296,7 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
       <svg
         viewBox="0 0 300 360"
         className="w-full max-w-sm mx-auto"
-        style={{ userSelect: 'none', maxHeight: isRevealed ? 220 : undefined }}
+        style={{ userSelect: 'none', maxHeight: isRevealed ? 170 : undefined }}
       >
         {/* ── Vertical lanes ── */}
         {Array.from({ length: LANES }, (_, i) => (
@@ -439,38 +439,38 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
       {/* ── Result card (post-reveal) ── */}
       {isRevealed && destLabels && (
         <motion.div
-          className="w-full max-w-sm mt-4 bg-white/70 backdrop-blur-md rounded-3xl overflow-hidden shadow-xl border border-white/80"
+          className="w-full max-w-sm mt-2 bg-white/70 backdrop-blur-md rounded-3xl overflow-hidden shadow-xl border border-white/80"
           initial={{ y: 24, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4, type: 'spring', stiffness: 160 }}
         >
-          <div className="p-5 pb-4" style={{ background: 'linear-gradient(135deg, #e0f2fe, #bae6fd)' }}>
-            <p className="font-noto text-sky-400 text-xs tracking-widest mb-1">RESULT ✨</p>
-            <h3 className="font-jua text-xl text-slate-700">
+          <div className="px-4 py-3" style={{ background: 'linear-gradient(135deg, #e0f2fe, #bae6fd)' }}>
+            <p className="font-noto text-sky-400 text-xs tracking-widest mb-0.5">RESULT ✨</p>
+            <h3 className="font-jua text-lg text-slate-700">
               {ladder.fixedResult.title} 확정! 🎉
             </h3>
           </div>
-          <div className="p-5">
+          <div className="px-4 py-3 flex flex-col gap-2">
             {ladder.fixedResult.desc && (
-              <p className="font-noto text-slate-600 text-sm leading-relaxed mb-4">
+              <p className="font-noto text-slate-600 text-sm leading-relaxed">
                 {ladder.fixedResult.desc}
               </p>
             )}
             {ladder.fixedResult.shopName && (
-              <p className="font-noto text-slate-600 text-sm mb-1">
+              <p className="font-noto text-slate-600 text-sm">
                 📍 {ladder.fixedResult.shopName}
                 {ladder.fixedResult.theme ? ` — ${ladder.fixedResult.theme}` : ''}
               </p>
             )}
             {ladder.fixedResult.time && (
-              <p className="font-noto text-slate-500 text-sm mb-4">
+              <p className="font-noto text-slate-500 text-sm">
                 ⏰ {ladder.fixedResult.time}
               </p>
             )}
             {state.chapter !== 'ch1-result' && (
               <button
                 onClick={() => advance('ch1-result')}
-                className="w-full font-jua text-xl text-white py-4 rounded-2xl shadow-md active:scale-95 transition-transform"
+                className="w-full font-jua text-xl text-white py-3 rounded-2xl shadow-md active:scale-95 transition-transform"
                 style={{ background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)' }}
               >
                 {ladder.fixedResult.title} 하러 가기 →
