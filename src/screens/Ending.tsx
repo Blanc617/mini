@@ -440,68 +440,106 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
   recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
   recorder.start(100);
 
-  function drawBg() {
+  const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
+
+  // 카드 고정 좌표
+  const cW = 260, cH = 346, cX = (W - cW) / 2, cY = (H - cH) / 2;
+  const pS = 220, pX = cX + 20, pY = cY + 20;
+
+  function drawStatic() {
+    // 배경
     ctx.fillStyle = '#fef3e2';
     ctx.fillRect(0, 0, W, H);
+    // 필름 구멍
     for (let i = 0; i < 7; i++) {
       const x = 24 + i * (W - 48) / 6;
       ctx.fillStyle = 'rgba(180,140,100,0.25)';
       rr(ctx, x - 7, 14, 14, 10, 3); ctx.fill();
       rr(ctx, x - 7, H - 24, 14, 10, 3); ctx.fill();
     }
-  }
-
-  function drawPolaroid(img: HTMLImageElement) {
-    drawBg();
-    // Birthday stamp
+    // 생일 스탬프
+    ctx.save();
+    ctx.translate(W / 2, 69);
+    ctx.rotate(-3 * Math.PI / 180);
     ctx.strokeStyle = 'rgba(140,80,30,0.45)'; ctx.lineWidth = 2;
-    rr(ctx, W / 2 - 88, 110, 176, 34, 6); ctx.stroke();
-    ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.fill();
-    ctx.fillStyle = 'rgba(120,60,20,0.85)';
+    rr(ctx, -88, -17, 176, 34, 6); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.fill();
+    ctx.fillStyle = 'rgba(120,60,20,0.8)';
     ctx.font = 'bold 13px "Noto Sans KR", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('🎂  MINI\'S BIRTHDAY', W / 2, 133);
-    // Card shadow
-    ctx.shadowColor = 'rgba(0,0,0,0.2)'; ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
-    const cW = 260, cH = 320, cX = (W - cW) / 2, cY = 165;
-    ctx.fillStyle = 'white'; rr(ctx, cX, cY, cW, cH, 4); ctx.fill();
-    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-    // Photo (cover fit inside 220×220)
-    const pS = 220, pX = cX + 20, pY = cY + 20;
-    ctx.save(); ctx.beginPath(); ctx.rect(pX, pY, pS, pS); ctx.clip();
-    const s = Math.max(pS / img.width, pS / img.height);
-    ctx.drawImage(img, pX + (pS - img.width * s) / 2, pY + (pS - img.height * s) / 2, img.width * s, img.height * s);
+    ctx.fillText('🎂  MINI\'S BIRTHDAY', 0, 6);
     ctx.restore();
-    // Caption
+    // 폴라로이드 카드 (프레임만)
+    ctx.save();
+    ctx.translate(W / 2, H / 2);
+    ctx.rotate(-2 * Math.PI / 180);
+    ctx.shadowColor = 'rgba(0,0,0,0.18)'; ctx.shadowBlur = 24; ctx.shadowOffsetY = 8;
+    ctx.fillStyle = 'white';
+    rr(ctx, -cW / 2, -cH / 2, cW, cH, 4); ctx.fill();
+    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+    // 캡션
+    const relPY = -cH / 2 + 20 + pS;
     ctx.fillStyle = '#5c3d1e'; ctx.font = '18px "Jua", sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('지누 × 미니', W / 2, pY + pS + 26);
+    ctx.fillText('지누 × 미니', 0, relPY + 26);
     ctx.fillStyle = 'rgba(120,80,40,0.65)'; ctx.font = '11px "Noto Sans KR", sans-serif';
-    ctx.fillText('2026. 10. 17', W / 2, pY + pS + 44);
-    // Subtext
-    ctx.fillStyle = 'rgba(140,100,60,0.6)'; ctx.font = '11px "Noto Sans KR", sans-serif';
-    ctx.fillText('오늘 하루의 기록 🎞️', W / 2, cY + cH + 28);
+    ctx.fillText('2026. 10. 17', 0, relPY + 44);
+    ctx.restore();
   }
 
-  function drawPhoto(img: HTMLImageElement) {
-    ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
-    const s = Math.min(W / img.width, H / img.height);
-    ctx.drawImage(img, (W - img.width * s) / 2, (H - img.height * s) / 2, img.width * s, img.height * s);
+  function drawPhotoInCard(img: HTMLImageElement, alpha = 1) {
+    ctx.save();
+    ctx.translate(W / 2, H / 2);
+    ctx.rotate(-2 * Math.PI / 180);
+    ctx.globalAlpha = alpha;
+    const rpX = -cW / 2 + 20, rpY = -cH / 2 + 20;
+    ctx.beginPath(); ctx.rect(rpX, rpY, pS, pS); ctx.clip();
+    const s = Math.max(pS / img.width, pS / img.height);
+    ctx.drawImage(img, rpX + (pS - img.width * s) / 2, rpY + (pS - img.height * s) / 2, img.width * s, img.height * s);
+    ctx.globalAlpha = 1;
+    ctx.restore();
   }
 
-  const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
-  const CYCLE = 2500;
-
-  // Title slide: cycle photos for 3s
-  const cycles = Math.ceil(3000 / CYCLE);
-  for (let i = 0; i < cycles; i++) {
-    drawPolaroid(images[i % images.length]);
-    await wait(CYCLE);
+  function drawCounter(idx: number) {
+    ctx.fillStyle = 'rgba(140,100,60,0.7)';
+    ctx.font = '12px "Noto Sans KR", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${idx + 1} / ${images.length}`, W / 2, H - 48);
   }
 
-  // Photo slides: 2s each
-  for (const img of images) {
-    drawPhoto(img);
-    await wait(2000);
+  // 각 사진: crossfade 500ms → hold (SLIDE_DURATION - 500ms)
+  const FADE_MS = 500, FADE_FRAMES = 15;
+  const HOLD_MS = 2000 - FADE_MS;
+
+  for (let i = 0; i < images.length; i++) {
+    const prev = images[i - 1];
+    const curr = images[i];
+
+    if (i === 0) {
+      // 첫 사진: fade in
+      for (let f = 0; f <= FADE_FRAMES; f++) {
+        const t = f / FADE_FRAMES;
+        drawStatic();
+        drawPhotoInCard(curr, t);
+        drawCounter(i);
+        await wait(FADE_MS / FADE_FRAMES);
+      }
+    } else {
+      // crossfade: prev → curr
+      for (let f = 0; f <= FADE_FRAMES; f++) {
+        const t = f / FADE_FRAMES;
+        drawStatic();
+        drawPhotoInCard(prev, 1 - t);
+        drawPhotoInCard(curr, t);
+        drawCounter(i);
+        await wait(FADE_MS / FADE_FRAMES);
+      }
+    }
+
+    // hold
+    drawStatic();
+    drawPhotoInCard(curr, 1);
+    drawCounter(i);
+    await wait(HOLD_MS);
   }
 
   recorder.stop();
