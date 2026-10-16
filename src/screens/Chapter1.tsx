@@ -204,6 +204,8 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
 
   // Destination labels per lane index — only set once revealed
   const [destLabels, setDestLabels] = useState<string[] | null>(null);
+  // showResultCard: true after 2.5s delay post-reveal
+  const [showResultCard, setShowResultCard] = useState(phase === 'revealed');
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -254,6 +256,7 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
           setPhase('revealed');
           update({ ch1: { startLane: lane, resultRevealed: true, bridges } });
           fireConfetti();
+          setTimeout(() => setShowResultCard(true), 2500);
         }, 300);
       } else {
         setDotPos(pts[idx]);
@@ -413,7 +416,7 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
                 textAnchor="middle"
                 fontSize={isRevealed && !isWinner ? 8 : 10}
                 fontFamily="Noto Sans KR, sans-serif"
-                fill={isRevealed && isUserDest && isWinner ? '#fff' : '#64748b'}
+                fill={isRevealed && isUserDest && isWinner ? '#fff' : '#1e293b'}
               >
                 {isRevealed ? truncate(label, 5) : '?'}
               </text>
@@ -441,8 +444,8 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
         )}
       </svg>
 
-      {/* ── Result card (post-reveal) ── */}
-      {isRevealed && destLabels && (
+      {/* ── Result card (post-reveal, after 2.5s delay) ── */}
+      {showResultCard && destLabels && (
         <motion.div
           className="w-full max-w-sm mt-3 bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl border border-white/80"
           initial={{ y: 24, opacity: 0 }}
