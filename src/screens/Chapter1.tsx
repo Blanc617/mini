@@ -421,18 +421,20 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
           );
         })}
 
-        {/* ── Animated dot ── */}
+        {/* ── Animated emoji ── */}
         {(isAnimating || isRevealed) && selectedLane !== null && (
-          <motion.circle
-            cx={dotPos.x}
-            cy={dotPos.y}
-            r={9}
-            fill="#0ea5e9"
-            stroke="white"
-            strokeWidth={2}
-            animate={{ cx: dotPos.x, cy: dotPos.y }}
+          <motion.text
+            x={dotPos.x}
+            y={dotPos.y}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontSize={18}
+            animate={{ x: dotPos.x, y: dotPos.y }}
             transition={{ duration: 0.15, ease: 'linear' }}
-          />
+            style={{ pointerEvents: 'none', userSelect: 'none' }}
+          >
+            🐰
+          </motion.text>
         )}
       </svg>
 
