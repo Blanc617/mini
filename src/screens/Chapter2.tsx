@@ -133,7 +133,7 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
 
   return (
     <div
-      className="h-full flex flex-col items-center justify-start p-4 pt-8 relative overflow-hidden"
+      className="h-full flex flex-col items-center justify-center p-4 relative overflow-hidden"
       style={{ background: 'linear-gradient(160deg, #e0f2fe 0%, #bae6fd 50%, #f0f9ff 100%)' }}
     >
       {/* Back button — shown in picking and result phases, not during animation */}
