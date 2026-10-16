@@ -13,6 +13,7 @@ type Phase = 'upload' | 'slideshow' | 'summary';
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const SLIDE_DURATION = 2000;
+const TITLE_SLIDE_DURATION = 3000;
 const CONTROLS_HIDE_DELAY = 2000;
 
 // ─── Title Slide (index 0) ────────────────────────────────────────────────────
@@ -160,7 +161,7 @@ function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
   // Auto-advance
   useEffect(() => {
     if (paused) return;
-    timerRef.current = setTimeout(() => goTo(index + 1), SLIDE_DURATION);
+    timerRef.current = setTimeout(() => goTo(index + 1), index === 0 ? TITLE_SLIDE_DURATION : SLIDE_DURATION);
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
