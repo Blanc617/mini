@@ -169,7 +169,7 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
                   오늘은 지누가 준비한<br />하루짜리 코스요리 🍽️
                 </p>
 
-                <p className="font-noto text-right text-xs text-sky-400 mt-3">from. 지누 🩵</p>
+                <p className="font-noto text-right text-xs text-sky-400 mt-2">from. 지누 🩵</p>
               </div>
 
             </motion.div>
