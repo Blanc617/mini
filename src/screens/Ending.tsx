@@ -506,34 +506,33 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
     ctx.fillText(`${idx + 1} / ${images.length}`, W / 2, H - 48);
   }
 
-  // 각 사진: crossfade 500ms → hold (SLIDE_DURATION - 500ms)
-  const FADE_MS = 500, FADE_FRAMES = 15;
-  const HOLD_MS = 2000 - FADE_MS;
+  // rAF 기반 페이드 (실제 500ms 보장)
+  const FADE_MS = 500;
+  const HOLD_MS = SLIDE_DURATION; // 2000ms
+
+  const animateFade = (durationMs: number, draw: (t: number) => void) =>
+    new Promise<void>(resolve => {
+      const start = performance.now();
+      function frame() {
+        const t = Math.min((performance.now() - start) / durationMs, 1);
+        draw(t);
+        if (t < 1) requestAnimationFrame(frame);
+        else resolve();
+      }
+      requestAnimationFrame(frame);
+    });
 
   for (let i = 0; i < images.length; i++) {
     const prev = images[i - 1];
     const curr = images[i];
 
-    if (i === 0) {
-      // 첫 사진: fade in
-      for (let f = 0; f <= FADE_FRAMES; f++) {
-        const t = f / FADE_FRAMES;
-        drawStatic();
-        drawPhotoInCard(curr, t);
-        drawCounter(i);
-        await wait(FADE_MS / FADE_FRAMES);
-      }
-    } else {
-      // crossfade: prev → curr
-      for (let f = 0; f <= FADE_FRAMES; f++) {
-        const t = f / FADE_FRAMES;
-        drawStatic();
-        drawPhotoInCard(prev, 1 - t);
-        drawPhotoInCard(curr, t);
-        drawCounter(i);
-        await wait(FADE_MS / FADE_FRAMES);
-      }
-    }
+    // crossfade (첫 장은 fade-in)
+    await animateFade(FADE_MS, t => {
+      drawStatic();
+      if (i > 0) drawPhotoInCard(prev, 1 - t);
+      drawPhotoInCard(curr, t);
+      drawCounter(i);
+    });
 
     // hold
     drawStatic();
