@@ -133,7 +133,7 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
 
   return (
     <div
-      className="h-full flex flex-col items-center justify-center p-4 relative overflow-hidden"
+      className="h-full flex flex-col items-center justify-start p-4 pt-8 relative overflow-hidden"
       style={{ background: 'linear-gradient(160deg, #e0f2fe 0%, #bae6fd 50%, #f0f9ff 100%)' }}
     >
       {/* Back button — shown in picking and result phases, not during animation */}
@@ -326,9 +326,26 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
               </div>
             </div>
 
-            <p className="font-noto text-slate-400 text-xs text-center mt-2">
-              식사 후 다음 퀘스트가 기다리고 있어요 👀
-            </p>
+            {/* 식당 분위기 카드 */}
+            <div
+              className="w-full max-w-sm mt-3 rounded-2xl px-4 py-3 flex flex-col gap-2"
+              style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(10px)', border: '1.5px solid rgba(255,255,255,0.8)' }}
+            >
+              <div className="flex gap-2 flex-wrap">
+                {['🕯️ 분위기 맛집', '🍝 이탈리안', '📍 종로구', '💑 데이트 코스'].map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-noto text-xs text-sky-600"
+                    style={{ background: 'rgba(14,165,233,0.08)', border: '1px solid rgba(14,165,233,0.2)', borderRadius: 20, padding: '3px 10px' }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <p className="font-noto text-slate-500 text-xs leading-relaxed">
+                식사 후 다음 퀘스트가 기다리고 있어요. 맛있게 드세요! 🍽️
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
