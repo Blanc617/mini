@@ -15,9 +15,9 @@ const PARTICLES = Array.from({ length: 14 }, (_, i) => ({
 }));
 
 const RULES = [
-  { num: 1, text: '뭘 먹고 뭘 할지는 전부 뽑기로 정해요.' },
-  { num: 2, text: '결과가 나올 때까지는 뭐가 걸려 있는지 비밀이에요.' },
-  { num: 3, text: '나온 건 무조건 해야 해요. (대신 나쁜 건 없어요 😊)' },
+  { num: 1, text: '뭘 먹고 뭘 할지는 전부 뽑기로 정한다.' },
+  { num: 2, text: '결과가 나올 때까지는 뭐가 걸려 있는지 비밀!' },
+  { num: 3, text: '나온 건 무조건 해야한다. (대신 나쁜건 없음)' },
 ];
 
 function fireConfetti() {
