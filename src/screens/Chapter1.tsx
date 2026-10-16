@@ -256,7 +256,7 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
           setPhase('revealed');
           update({ ch1: { startLane: lane, resultRevealed: true, bridges } });
           fireConfetti();
-          setTimeout(() => setShowResultCard(true), 2500);
+          setShowResultCard(true);
         }, 300);
       } else {
         setDotPos(pts[idx]);
