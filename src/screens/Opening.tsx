@@ -126,6 +126,18 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
               Mini Day 🎉
             </motion.h1>
 
+            {/* 호스트 배지 */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.52 }}
+              className="flex items-center gap-2 bg-white/50 backdrop-blur-sm border border-white/70 rounded-full px-4 py-2 mb-3"
+            >
+              <span className="text-base">🎩</span>
+              <p className="font-noto text-xs text-slate-400">오늘의 호스트</p>
+              <p className="font-jua text-sm text-slate-600">지누</p>
+            </motion.div>
+
             {/* 초대 카드 */}
             <motion.div
               initial={{ y: 28, opacity: 0 }}
@@ -160,18 +172,6 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
                 <p className="font-noto text-right text-xs text-sky-400 mt-3">from. 지누 🩵</p>
               </div>
 
-            </motion.div>
-
-            {/* 호스트 배지 */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.65 }}
-              className="flex items-center gap-2 bg-white/50 backdrop-blur-sm border border-white/70 rounded-full px-4 py-2 mb-4"
-            >
-              <span className="text-base">🎩</span>
-              <p className="font-noto text-xs text-slate-400">오늘의 호스트</p>
-              <p className="font-jua text-sm text-slate-600">지누</p>
             </motion.div>
 
             {/* 입장 버튼 */}
