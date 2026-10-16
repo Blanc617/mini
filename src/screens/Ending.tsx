@@ -261,7 +261,7 @@ interface UploadProps {
   onPhotos: (urls: string[], count: number) => void;
 }
 
-function UploadUI({ wasRefreshed, onPhotos }: UploadProps) {
+function UploadUI({ wasRefreshed: _wasRefreshed, onPhotos }: UploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   function handleFiles(e: React.ChangeEvent<HTMLInputElement>) {
