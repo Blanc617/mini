@@ -11,8 +11,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── 라이트 모드 강제 고정 ────────────────────────────────────────────────── */
-html, body {
+/* ── 라이트 모드 강제 고정 (삼성 인터넷 강제 다크모드 차단 포함) ────────── */
+html {
+  background: #e0f2fe !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+body {
   background: #e0f2fe !important;
 }
 
