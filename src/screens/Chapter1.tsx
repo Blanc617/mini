@@ -118,13 +118,13 @@ function EscapeResult({ state, update, advance, goBack }: EscapeResultProps) {
 
   return (
     <div
-      className="h-full flex flex-col items-center justify-center p-6 relative"
+      className="h-full flex flex-col items-center overflow-y-auto p-6 relative"
       style={{ background: 'linear-gradient(160deg, #e0f2fe 0%, #bae6fd 50%, #f0f9ff 100%)' }}
     >
       <BackButton onClick={goBack} className="absolute top-5 left-5 z-20" />
 
       <motion.div
-        className="w-full max-w-xs bg-white/70 backdrop-blur-md rounded-3xl overflow-hidden shadow-xl border border-white/80"
+        className="w-full max-w-xs bg-white/70 backdrop-blur-md rounded-3xl overflow-hidden shadow-xl border border-white/80 my-auto"
         initial={{ y: 32, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 160 }}
