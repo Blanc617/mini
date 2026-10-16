@@ -227,67 +227,95 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
           </motion.div>
         )}
 
-        {/* ── STEP 1: 입장 확인 ── */}
+        {/* ── STEP 1: 입장 환영 ── */}
         {step === 1 && (
           <motion.div
             key="step1"
             className="h-full flex flex-col items-center justify-center p-6 relative z-10"
-            initial={{ opacity: 0, scale: 1.04 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0, x: -30, transition: { duration: 0.25 } }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: 0.3 }}
           >
             <BackButton onClick={() => setStep(0)} className="absolute top-5 left-5 z-20" />
+
+            {/* 큰 환영 이모지 */}
             <motion.div
-              className="w-full max-w-xs"
-              initial={{ y: 36, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.08, type: 'spring', stiffness: 150 }}
+              initial={{ scale: 0, rotate: -20 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.05, type: 'spring', stiffness: 200, damping: 12 }}
+              className="text-7xl mb-2 select-none"
             >
-              {/* 카드 헤더 */}
-              <div
-                className="rounded-t-3xl p-6 text-center"
-                style={{ background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)' }}
-              >
-                <p className="font-noto text-white/75 text-xs tracking-widest mb-1">🎪 PARTY PASS</p>
-                <h2 className="font-jua text-4xl text-white mb-1">미니님</h2>
-                <p className="font-noto text-white/90 text-sm">파티장에 입장하셨습니다!</p>
-              </div>
+              🎉
+            </motion.div>
 
-              {/* 점선 구분선 (티켓 스타일) */}
-              <div
-                className="flex items-center px-0"
-                style={{ background: 'linear-gradient(to right, #bae6fd, #e0f2fe)' }}
-              >
-                <div className="w-5 h-5 rounded-full bg-sky-100 -ml-2.5 flex-shrink-0 border border-sky-200" />
-                <div className="flex-1 border-t-2 border-dashed border-sky-300/60 mx-1" />
-                <div className="w-5 h-5 rounded-full bg-sky-100 -mr-2.5 flex-shrink-0 border border-sky-200" />
-              </div>
+            {/* 환영 텍스트 */}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-6"
+            >
+              <p className="font-noto text-sky-400 text-xs tracking-widest mb-2">✦ WELCOME ✦</p>
+              <h2 className="font-jua text-5xl mb-1" style={{ background: 'linear-gradient(135deg, #0ea5e9, #38bdf8, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                미니님
+              </h2>
+              <p className="font-jua text-xl text-slate-600">파티에 오신 걸 환영해요! 🥳</p>
+            </motion.div>
 
-              {/* 카드 바디 */}
-              <div className="bg-white/70 backdrop-blur-md rounded-b-3xl p-6 shadow-xl border border-white/80 border-t-0">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-11 h-11 rounded-2xl bg-sky-50 border border-sky-100 flex items-center justify-center text-2xl flex-shrink-0">
-                    🎩
-                  </div>
+            {/* 카드 */}
+            <motion.div
+              initial={{ y: 28, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.35, type: 'spring', stiffness: 160 }}
+              className="w-full max-w-xs mb-7"
+              style={{
+                background: 'linear-gradient(145deg, rgba(255,255,255,0.78), rgba(240,249,255,0.88))',
+                backdropFilter: 'blur(14px)',
+                borderRadius: 28,
+                border: '1.5px solid rgba(255,255,255,0.9)',
+                boxShadow: '0 8px 32px rgba(56,189,248,0.18), 0 2px 8px rgba(0,0,0,0.06)',
+                overflow: 'hidden',
+              }}
+            >
+              {/* 상단 컬러 바 */}
+              <div style={{ background: 'linear-gradient(135deg, #38bdf8, #7dd3fc, #a78bfa)', height: 6 }} />
+              <div className="px-6 py-5">
+                {/* 호스트 배지 */}
+                <div className="flex items-center gap-3 mb-4 bg-sky-50/80 rounded-2xl px-4 py-3">
+                  <span className="text-2xl">🎩</span>
                   <div>
-                    <p className="font-noto text-xs text-slate-400 mb-0.5">오늘의 호스트</p>
-                    <p className="font-jua text-slate-700 text-xl leading-none">지누</p>
+                    <p className="font-noto text-xs text-slate-400 leading-none mb-0.5">오늘의 호스트</p>
+                    <p className="font-jua text-slate-700 text-lg leading-none">지누</p>
+                  </div>
+                  <div className="ml-auto">
+                    <span className="font-noto text-xs bg-sky-100 text-sky-500 rounded-full px-2.5 py-1">VIP</span>
                   </div>
                 </div>
-                <p className="font-noto text-slate-600 text-sm leading-relaxed mb-5">
-                  오늘 하루는 지누가 짜둔<br />
-                  파티 코스로 진행돼요. 🗺️
+
+                <p className="font-noto text-slate-500 text-sm leading-relaxed text-center">
+                  오늘 하루는 지누가 미니만을 위해<br />
+                  특별하게 준비한 코스로 진행돼요 💙
                 </p>
-                <button
-                  onClick={() => setStep(2)}
-                  className="w-full font-jua text-lg text-white py-4 rounded-2xl shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)' }}
-                >
-                  계속하기 →
-                </button>
               </div>
             </motion.div>
+
+            <motion.button
+              initial={{ y: 16, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.52 }}
+              whileTap={{ scale: 0.93 }}
+              onClick={() => setStep(2)}
+              className="relative font-jua text-xl text-white px-14 py-4 rounded-2xl shadow-xl overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)' }}
+            >
+              계속하기 →
+              <motion.div
+                className="absolute inset-0 bg-white/20"
+                animate={{ opacity: [0, 0.35, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </motion.button>
           </motion.div>
         )}
 

@@ -248,8 +248,8 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
           )}
 
           {/* Fixed pointer at top */}
-          <polygon points="150,8 143,28 157,28" fill="#0ea5e9" />
-          <polygon points="150,8 143,28 157,28" fill="none" stroke="white" strokeWidth={1.5} />
+          <polygon points="150,28 143,8 157,8" fill="#0ea5e9" />
+          <polygon points="150,28 143,8 157,8" fill="none" stroke="white" strokeWidth={1.5} />
         </svg>
       </div>
 
