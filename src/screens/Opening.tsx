@@ -151,13 +151,10 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
                 <p className="font-noto text-sky-300 text-xs text-center tracking-widest mb-2">INVITATION</p>
 
                 <p className="font-jua text-center text-slate-700 leading-relaxed mb-1" style={{ fontSize: 17 }}>
-                  오늘 하루만큼은
+                  생일 축하해 미니야 🎂
                 </p>
                 <p className="font-jua text-center leading-snug mb-2" style={{ fontSize: 22, background: 'linear-gradient(135deg, #0ea5e9, #38bdf8, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                  세상에서 제일<br />특별한 하루 🎁
-                </p>
-                <p className="font-noto text-slate-500 text-center text-sm leading-relaxed">
-                  지누가 미니만을 위해<br />준비했어요 💙
+                  오늘은 지누가 준비한<br />하루짜리 코스요리 🍽️
                 </p>
 
                 <p className="font-noto text-right text-xs text-sky-400 mt-3">from. 지누 🩵</p>
