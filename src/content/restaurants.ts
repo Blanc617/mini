@@ -8,6 +8,10 @@ export interface Restaurant {
   imageUrl?: string;
   imageUrls?: string[];
   recommended?: string[];
+  rating?: string;
+  reviewCount?: string;
+  tagline?: string;
+  hours?: string;
 }
 
 // 어떤 캡슐을 뽑아도 항상 이 결과가 나온다
@@ -20,6 +24,10 @@ export const fixedRestaurant: Restaurant = {
   recommended: ['풍기 피자', '상하이 파스타'],
   mapUrl: 'https://map.naver.com/p/entry/place/33875115?c=15.00,0,0,0,dh&placePath=%2Fhome%3Ffrom%3Dmap%26fromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202610161849%26locale%3Dko%26svcName%3Dmap_pcv5',
   imageUrls: ['/slowpark1.png', '/slowpark2.png', '/slowpark3.png'],
+  rating: '4.7',
+  reviewCount: '리뷰 200+',
+  tagline: '조용하고 감성적인 이탈리안 다이닝',
+  hours: '매일 11:30 - 22:00 (브레이크 15:00 - 17:00)',
 };
 
 // 캡슐 색깔만 다르게 보여주기 위한 더미 목록 (실제 결과에는 사용되지 않음)

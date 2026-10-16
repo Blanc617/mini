@@ -300,6 +300,35 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
                   </div>
                 ) : null}
 
+                {/* 별점 + 한줄 소개 */}
+                {(resultRestaurant?.rating || resultRestaurant?.tagline) && (
+                  <div className="flex items-center gap-2">
+                    {resultRestaurant.rating && (
+                      <div className="flex items-center gap-1">
+                        <span className="text-amber-400 text-xs">★</span>
+                        <span className="font-noto text-slate-700 text-xs font-bold">{resultRestaurant.rating}</span>
+                        {resultRestaurant.reviewCount && (
+                          <span className="font-noto text-slate-400 text-xs">· {resultRestaurant.reviewCount}</span>
+                        )}
+                      </div>
+                    )}
+                    {resultRestaurant.tagline && (
+                      <>
+                        <span className="text-slate-200 text-xs">|</span>
+                        <span className="font-noto text-slate-400 text-xs">{resultRestaurant.tagline}</span>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {/* 영업시간 */}
+                {resultRestaurant?.hours && (
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs">🕐</span>
+                    <span className="font-noto text-slate-400 text-xs">{resultRestaurant.hours}</span>
+                  </div>
+                )}
+
                 {/* 추천 메뉴 */}
                 {resultRestaurant?.recommended && resultRestaurant.recommended.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
@@ -326,26 +355,6 @@ export default function Chapter2({ state, update, advance, goBack }: ScreenProps
               </div>
             </div>
 
-            {/* 식당 분위기 카드 */}
-            <div
-              className="w-full max-w-sm mt-3 rounded-2xl px-4 py-3 flex flex-col gap-2"
-              style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(10px)', border: '1.5px solid rgba(255,255,255,0.8)' }}
-            >
-              <div className="flex gap-2 flex-wrap">
-                {['🕯️ 분위기 맛집', '🍝 이탈리안', '📍 종로구', '💑 데이트 코스'].map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-noto text-xs text-sky-600"
-                    style={{ background: 'rgba(14,165,233,0.08)', border: '1px solid rgba(14,165,233,0.2)', borderRadius: 20, padding: '3px 10px' }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <p className="font-noto text-slate-500 text-xs leading-relaxed">
-                식사 후 다음 퀘스트가 기다리고 있어요. 맛있게 드세요! 🍽️
-              </p>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
