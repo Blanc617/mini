@@ -423,18 +423,21 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
 
         {/* ── Animated emoji ── */}
         {(isAnimating || isRevealed) && selectedLane !== null && (
-          <motion.text
-            x={dotPos.x}
-            y={dotPos.y}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fontSize={18}
+          <motion.g
             animate={{ x: dotPos.x, y: dotPos.y }}
             transition={{ duration: 0.15, ease: 'linear' }}
             style={{ pointerEvents: 'none', userSelect: 'none' }}
           >
-            🐰
-          </motion.text>
+            <text
+              x={0}
+              y={0}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize={18}
+            >
+              🐰
+            </text>
+          </motion.g>
         )}
       </svg>
 
