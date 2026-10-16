@@ -519,7 +519,7 @@ function Ch1Intro({ onStart, goBack }: { onStart: () => void; goBack: () => void
         <div className="bg-white/70 backdrop-blur-md rounded-b-3xl p-6 shadow-xl border border-white/80 border-t-0">
           <p className="font-noto text-slate-600 text-sm leading-relaxed mb-5">
             사다리타기로 오늘의 <span className="text-sky-500 font-bold">첫 번째 활동</span>이 결정돼요.<br /><br />
-            1~5번 중 하나를 골라 사다리를 타고 내려가면 활동이 공개됩니다. 뭐가 나올지는 아무도 몰라요! 🤫
+            1~5번 중 하나를 골라 사다리를 타고 내려가면 활동이 공개됩니다.<br />뭐가 나올지는 아무도 몰라요! 🤫
           </p>
 
           <motion.button
