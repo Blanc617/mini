@@ -458,7 +458,7 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
                   href={ladder.fixedResult.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-noto text-sky-500 text-xs underline underline-offset-2 shrink-0 ml-2"
+                  className="font-noto text-slate-700 text-xs underline underline-offset-2 shrink-0 ml-2"
                 >
                   지도 →
                 </a>
