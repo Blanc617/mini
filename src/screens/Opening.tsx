@@ -131,13 +131,46 @@ export default function Opening({ state, advance, resetState }: ScreenProps) {
               initial={{ y: 28, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.58 }}
-              className="w-full max-w-xs bg-white/65 backdrop-blur-md rounded-3xl p-6 mb-9 shadow-lg border border-white/80"
+              className="w-full max-w-xs mb-9"
+              style={{
+                background: 'linear-gradient(145deg, rgba(255,255,255,0.75), rgba(240,249,255,0.85))',
+                backdropFilter: 'blur(12px)',
+                borderRadius: 28,
+                border: '1.5px solid rgba(255,255,255,0.9)',
+                boxShadow: '0 8px 32px rgba(56,189,248,0.15), 0 2px 8px rgba(0,0,0,0.06)',
+                overflow: 'hidden',
+              }}
             >
-              <p className="font-noto text-slate-600 text-center text-[15px] leading-relaxed">
-                지누가 준비한<br />
-                <span className="text-sky-500 font-bold">미니만을 위한 파티</span>에
-                <br />초대합니다 🎊
-              </p>
+              {/* 상단 장식 띠 */}
+              <div style={{ background: 'linear-gradient(135deg, #38bdf8, #7dd3fc, #a5f3fc)', padding: '10px 0', textAlign: 'center', letterSpacing: 6, fontSize: 16 }}>
+                ✦ ✦ ✦ ✦ ✦
+              </div>
+
+              {/* 본문 */}
+              <div style={{ padding: '20px 24px 18px' }}>
+                <p className="font-noto text-sky-400 text-xs text-center tracking-widest mb-3">💌 INVITATION</p>
+
+                <p className="font-jua text-center text-slate-700 leading-relaxed mb-2" style={{ fontSize: 17 }}>
+                  오늘 하루만큼은
+                </p>
+                <p className="font-jua text-center leading-snug mb-3" style={{ fontSize: 22, background: 'linear-gradient(135deg, #0ea5e9, #38bdf8, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  세상에서 제일<br />특별한 하루 🎁
+                </p>
+                <p className="font-noto text-slate-500 text-center text-sm leading-relaxed">
+                  지누가 미니만을 위해<br />준비했어요 💙
+                </p>
+
+                <div className="flex items-center gap-2 mt-4 justify-center">
+                  <div style={{ flex: 1, height: 1, background: 'linear-gradient(to right, transparent, #bae6fd)' }} />
+                  <span className="font-noto text-xs text-sky-400">from. 지누 🩵</span>
+                  <div style={{ flex: 1, height: 1, background: 'linear-gradient(to left, transparent, #bae6fd)' }} />
+                </div>
+              </div>
+
+              {/* 하단 장식 띠 */}
+              <div style={{ background: 'linear-gradient(135deg, #a5f3fc, #7dd3fc, #38bdf8)', padding: '10px 0', textAlign: 'center', letterSpacing: 6, fontSize: 16 }}>
+                🎀 🎉 🎈 🎊 🎂
+              </div>
             </motion.div>
 
             {/* 입장 버튼 */}
