@@ -23,7 +23,7 @@ function TitleSlide({ photoUrls }: { photoUrls: string[] }) {
 
   useEffect(() => {
     if (photoUrls.length <= 1) return;
-    const id = setInterval(() => setPhotoIdx(p => (p + 1) % photoUrls.length), 700);
+    const id = setInterval(() => setPhotoIdx(p => (p + 1) % photoUrls.length), 2500);
     return () => clearInterval(id);
   }, [photoUrls]);
 
@@ -514,7 +514,7 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
   }
 
   const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
-  const CYCLE = 700;
+  const CYCLE = 2500;
 
   // Title slide: cycle photos for 3s
   const cycles = Math.ceil(3000 / CYCLE);
