@@ -451,7 +451,19 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
         >
           <div className="px-4 py-2.5" style={{ background: 'linear-gradient(135deg, #e0f2fe, #bae6fd)' }}>
             <p className="font-noto text-sky-400 text-xs tracking-widest mb-0.5">RESULT ✨</p>
-            <h3 className="font-jua text-lg text-slate-700">{ladder.fixedResult.title} 확정! 🎉</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="font-jua text-lg text-slate-700">{ladder.fixedResult.title} 확정! 🎉</h3>
+              {ladder.fixedResult.mapUrl && (
+                <a
+                  href={ladder.fixedResult.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-noto text-sky-500 text-xs underline underline-offset-2 shrink-0 ml-2"
+                >
+                  지도 →
+                </a>
+              )}
+            </div>
           </div>
           <div className="px-4 py-3 flex flex-col gap-2">
             {ladder.fixedResult.desc && (

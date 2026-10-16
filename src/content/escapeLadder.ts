@@ -7,7 +7,7 @@ export const ladder = {
     shopName: '',
     theme: '',
     time: '',
-    mapUrl: '',
+    mapUrl: 'https://naver.me/Gn0yAbFX',
     intro: '',
   },
   losers: [
