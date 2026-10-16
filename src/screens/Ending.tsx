@@ -12,7 +12,7 @@ type Phase = 'upload' | 'slideshow' | 'summary';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const SLIDE_DURATION = 3000;
+const SLIDE_DURATION = 2000;
 const CONTROLS_HIDE_DELAY = 2000;
 
 // ─── Title Slide (index 0) ────────────────────────────────────────────────────
@@ -23,36 +23,94 @@ function TitleSlide() {
       style={{
         width: '100%',
         height: '100%',
-        background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)',
+        background: 'linear-gradient(160deg, #0a0f1a 0%, #0c1a2e 60%, #0f2744 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 16,
+        gap: 0,
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <span
-        style={{
-          fontFamily: 'Jua, sans-serif',
-          fontSize: 'clamp(2rem, 8vw, 3.5rem)',
-          color: 'white',
-          textShadow: '0 2px 12px rgba(0,0,0,0.18)',
-          lineHeight: 1.2,
-          textAlign: 'center',
-        }}
-      >
-        Happy Mini Day 🎉
-      </span>
-      <span
+      {/* 별 파티클 */}
+      {[...Array(18)].map((_, i) => (
+        <motion.div
+          key={i}
+          style={{
+            position: 'absolute',
+            width: i % 3 === 0 ? 3 : 2,
+            height: i % 3 === 0 ? 3 : 2,
+            borderRadius: '50%',
+            background: 'white',
+            left: `${(i * 17 + 5) % 100}%`,
+            top: `${(i * 13 + 8) % 100}%`,
+          }}
+          animate={{ opacity: [0.2, 1, 0.2] }}
+          transition={{ duration: 2 + (i % 3), repeat: Infinity, delay: i * 0.15 }}
+        />
+      ))}
+
+      {/* 날짜 */}
+      <motion.span
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
         style={{
           fontFamily: 'Noto Sans KR, sans-serif',
-          fontSize: 'clamp(1rem, 4vw, 1.5rem)',
-          color: 'rgba(255,255,255,0.85)',
-          letterSpacing: '0.1em',
+          fontSize: 13,
+          color: 'rgba(125,211,252,0.8)',
+          letterSpacing: '0.25em',
+          marginBottom: 20,
         }}
       >
-        2026.10.17
-      </span>
+        2026 · 10 · 17
+      </motion.span>
+
+      {/* 메인 타이틀 */}
+      <motion.span
+        initial={{ opacity: 0, scale: 0.88 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.35, type: 'spring', stiffness: 160 }}
+        style={{
+          fontFamily: 'Jua, sans-serif',
+          fontSize: 'clamp(2.2rem, 9vw, 3.8rem)',
+          color: 'white',
+          textAlign: 'center',
+          lineHeight: 1.15,
+          marginBottom: 12,
+        }}
+      >
+        지누 × 미니
+      </motion.span>
+
+      {/* 서브 */}
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.55 }}
+        style={{
+          fontFamily: 'Noto Sans KR, sans-serif',
+          fontSize: 14,
+          color: 'rgba(186,230,253,0.7)',
+          letterSpacing: '0.15em',
+          marginBottom: 36,
+        }}
+      >
+        오늘 하루의 기록 💙
+      </motion.span>
+
+      {/* 구분선 */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        style={{
+          width: 60,
+          height: 1,
+          background: 'linear-gradient(to right, transparent, rgba(125,211,252,0.6), transparent)',
+        }}
+      />
     </div>
   );
 }
