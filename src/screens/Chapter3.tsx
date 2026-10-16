@@ -220,7 +220,7 @@ export default function Chapter3({ state, update, advance, goBack }: ScreenProps
                     fontSize={phase === 'revealed' ? 11 : 14}
                     fontFamily="Jua, sans-serif"
                     fill="white"
-                    transform={phase === 'revealed' && isWinner ? `rotate(-90, ${x}, ${y})` : `rotate(${midDeg}, ${x}, ${y})`}
+                    transform={phase === 'revealed' && isWinner ? `rotate(-90, ${x}, ${y})` : `rotate(${midDeg + 90}, ${x}, ${y})`}
                     style={{ pointerEvents: 'none', userSelect: 'none' }}
                   >
                     {label}
