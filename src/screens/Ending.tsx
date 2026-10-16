@@ -374,7 +374,7 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
   const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
 
   // 카드 고정 좌표
-  const cW = 260, cH = 346, cX = (W - cW) / 2, cY = (H - cH) / 2;
+  const cW = 260, cH = 346, cY = (H - cH) / 2;
   const pS = 220;
 
   function drawStatic() {
