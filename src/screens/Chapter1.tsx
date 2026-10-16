@@ -296,7 +296,7 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
       <svg
         viewBox="0 0 300 360"
         className="w-full max-w-sm mx-auto"
-        style={{ userSelect: 'none' }}
+        style={{ userSelect: 'none', maxHeight: isRevealed ? 200 : undefined }}
       >
         {/* ── Vertical lanes ── */}
         {Array.from({ length: LANES }, (_, i) => (
