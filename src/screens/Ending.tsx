@@ -205,182 +205,119 @@ interface SlideshowProps {
 }
 
 function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
-  // index 0 = title card, 1..N = photos
-  const total = photoUrls.length + 1;
-  const [index, setIndex] = useState(0);
+  const [photoIdx, setPhotoIdx] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [showControls, setShowControls] = useState(true);
-
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const controlsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const goTo = useCallback(
-    (next: number) => {
-      if (next >= total) {
-        onEnd();
-        return;
-      }
-      setIndex(next);
-    },
-    [total, onEnd],
-  );
+  const goNext = useCallback(() => {
+    setPhotoIdx(p => {
+      if (p + 1 >= photoUrls.length) { onEnd(); return p; }
+      return p + 1;
+    });
+  }, [photoUrls.length, onEnd]);
 
-  // Auto-advance
   useEffect(() => {
     if (paused) return;
-    timerRef.current = setTimeout(() => goTo(index + 1), index === 0 ? TITLE_SLIDE_DURATION : SLIDE_DURATION);
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [index, paused, goTo]);
-
-  // Show controls briefly on mount
-  useEffect(() => {
-    controlsTimerRef.current = setTimeout(
-      () => setShowControls(false),
-      CONTROLS_HIDE_DELAY,
-    );
-    return () => {
-      if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
-    };
-  }, []);
-
-  function revealControls() {
-    setShowControls(true);
-    if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
-    controlsTimerRef.current = setTimeout(
-      () => setShowControls(false),
-      CONTROLS_HIDE_DELAY,
-    );
-  }
+    timerRef.current = setTimeout(goNext, SLIDE_DURATION);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [photoIdx, paused, goNext]);
 
   function handleTap(e: React.MouseEvent<HTMLDivElement>) {
     const x = e.clientX;
     const w = (e.currentTarget as HTMLDivElement).offsetWidth;
-    const third = w / 3;
-
-    if (x < third) {
-      // Left third: prev
-      revealControls();
-      goTo(Math.max(0, index - 1));
-    } else if (x > w - third) {
-      // Right third: next
-      revealControls();
-      goTo(index + 1);
+    if (x < w / 3) {
+      setPhotoIdx(p => Math.max(0, p - 1));
+    } else if (x > (w * 2) / 3) {
+      goNext();
     } else {
-      // Center: pause/resume + show controls
-      setPaused((p) => !p);
-      revealControls();
+      setPaused(p => !p);
     }
   }
 
-  const isTitle = index === 0;
-  const photoUrl = isTitle ? null : photoUrls[index - 1];
-
   return (
     <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: '#000',
-        zIndex: 50,
-        overflow: 'hidden',
-        cursor: 'pointer',
-      }}
+      style={{ position: 'fixed', inset: 0, zIndex: 50, overflow: 'hidden', cursor: 'pointer',
+        background: 'linear-gradient(160deg, #fdf6ec 0%, #fef3e2 60%, #fdf0e0 100%)' }}
       onClick={handleTap}
     >
-      {/* Slide content */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ position: 'absolute', inset: 0 }}
-        >
-          {isTitle ? (
-            <TitleSlide photoUrls={photoUrls} />
-          ) : (
-            <PhotoPolaroidSlide url={photoUrl!} num={index} total={photoUrls.length} />
-          )}
-        </motion.div>
-      </AnimatePresence>
+      {/* 필름 그레인 */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none',
+        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.04\'/%3E%3C/svg%3E")',
+        opacity: 0.6 }} />
 
-      {/* Back button — always visible */}
-      <button
-        onClick={(e) => { e.stopPropagation(); onBack(); }}
-        className="absolute top-4 left-4 z-30 w-12 h-12 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20"
-      >
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <path d="M11 4L6 9L11 14" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* 상단 필름 구멍 */}
+      <div style={{ position: 'absolute', top: 18, left: 0, right: 0, display: 'flex', justifyContent: 'space-around', paddingInline: 12, pointerEvents: 'none' }}>
+        {[...Array(7)].map((_, i) => <div key={i} style={{ width: 14, height: 10, borderRadius: 3, background: 'rgba(180,140,100,0.25)' }} />)}
+      </div>
+      {/* 하단 필름 구멍 */}
+      <div style={{ position: 'absolute', bottom: 18, left: 0, right: 0, display: 'flex', justifyContent: 'space-around', paddingInline: 12, pointerEvents: 'none' }}>
+        {[...Array(7)].map((_, i) => <div key={i} style={{ width: 14, height: 10, borderRadius: 3, background: 'rgba(180,140,100,0.25)' }} />)}
+      </div>
+
+      {/* 생일 스탬프 */}
+      <div style={{ position: 'absolute', top: 52, left: '50%', transform: 'translateX(-50%) rotate(-3deg)',
+        border: '2px solid rgba(140,80,30,0.45)', borderRadius: 6, padding: '6px 16px',
+        display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.5)', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+        <span style={{ fontSize: 14 }}>🎂</span>
+        <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 13, fontWeight: 700, color: 'rgba(120,60,20,0.8)', letterSpacing: '0.15em' }}>MINI'S BIRTHDAY</span>
+      </div>
+
+      {/* 폴라로이드 카드 — 고정 프레임 */}
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%) rotate(-2deg)',
+        background: 'white', borderRadius: 4, padding: '20px 20px 52px',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', width: 260 }}>
+
+        {/* 사진 영역 — 사진만 교체 */}
+        <div style={{ width: 220, height: 220, borderRadius: 2, overflow: 'hidden', marginBottom: 14, position: 'relative', background: '#fde8c8' }}>
+          {photoUrls.map((url, i) => (
+            <motion.img
+              key={i}
+              src={url}
+              alt=""
+              animate={{ opacity: i === photoIdx ? 1 : 0 }}
+              transition={{ duration: 0.5 }}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          ))}
+        </div>
+
+        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>지누 × 미니</span>
+        <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>2026. 10. 17</span>
+      </div>
+
+      {/* 사진 카운터 */}
+      <div style={{ position: 'absolute', bottom: 48, left: '50%', transform: 'translateX(-50%)',
+        fontFamily: 'Noto Sans KR, sans-serif', fontSize: 12, color: 'rgba(140,100,60,0.7)', letterSpacing: '0.15em', pointerEvents: 'none' }}>
+        {photoIdx + 1} / {photoUrls.length}
+      </div>
+
+      {/* 뒤로 버튼 */}
+      <button onClick={(e) => { e.stopPropagation(); onBack(); }}
+        style={{ position: 'absolute', top: 16, left: 16, zIndex: 10,
+          width: 40, height: 40, borderRadius: '50%', background: 'rgba(140,100,60,0.15)',
+          border: '1px solid rgba(140,100,60,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+        <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+          <path d="M11 4L6 9L11 14" stroke="rgba(100,60,20,0.8)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
 
-      {/* Controls overlay */}
-      <AnimatePresence>
-        {showControls && (
-          <motion.div
-            key="controls"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              padding: '24px 20px',
-              background:
-                'linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 12,
-              pointerEvents: 'none',
-            }}
-          >
-            {/* Pause/Play */}
-            <span style={{ fontSize: 28, color: 'white', opacity: 0.9 }}>
-              {paused ? '▶️' : '⏸️'}
-            </span>
+      {/* 요약 버튼 */}
+      <button onClick={(e) => { e.stopPropagation(); onEnd(); }}
+        style={{ position: 'absolute', top: 16, right: 16, zIndex: 10,
+          fontFamily: 'Jua, sans-serif', fontSize: 13, color: 'rgba(100,60,20,0.8)',
+          background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(140,100,60,0.3)',
+          borderRadius: 20, padding: '7px 14px', cursor: 'pointer' }}>
+        요약 보기
+      </button>
 
-            {/* Counter */}
-            <span
-              style={{
-                fontFamily: 'Noto Sans KR, sans-serif',
-                fontSize: 14,
-                color: 'rgba(255,255,255,0.85)',
-              }}
-            >
-              {index} / {total - 1}
-            </span>
-
-            {/* Summary button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onEnd();
-              }}
-              style={{
-                fontFamily: 'Jua, sans-serif',
-                fontSize: 14,
-                color: 'white',
-                background: 'rgba(255,255,255,0.18)',
-                border: '1px solid rgba(255,255,255,0.35)',
-                borderRadius: 20,
-                padding: '8px 16px',
-                cursor: 'pointer',
-                backdropFilter: 'blur(6px)',
-                pointerEvents: 'all',
-              }}
-            >
-              요약 카드 보기
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* 일시정지 표시 */}
+      {paused && (
+        <div style={{ position: 'absolute', bottom: 80, left: '50%', transform: 'translateX(-50%)',
+          fontFamily: 'Noto Sans KR, sans-serif', fontSize: 12, color: 'rgba(140,100,60,0.6)', pointerEvents: 'none' }}>
+          ⏸ 일시정지
+        </div>
+      )}
     </div>
   );
 }
