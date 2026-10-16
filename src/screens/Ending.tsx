@@ -91,16 +91,36 @@ function TitleSlide() {
           지누 × 미니
         </span>
         <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>
-          🎂 미니의 생일 · 2026. 10. 17
+          2026. 10. 17
         </span>
       </motion.div>
 
-      {/* 아래 서브텍스트 */}
+      {/* 생일 배지 */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5, type: 'spring', stiffness: 160 }}
+        style={{
+          marginTop: 24,
+          background: 'linear-gradient(135deg, #fb923c, #f97316)',
+          borderRadius: 999,
+          padding: '7px 18px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+          boxShadow: '0 4px 12px rgba(249,115,22,0.3)',
+        }}
+      >
+        <span style={{ fontSize: 16 }}>🎂</span>
+        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 15, color: 'white', letterSpacing: 1 }}>미니의 생일</span>
+      </motion.div>
+
+      {/* 서브텍스트 */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.55 }}
-        style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 12, color: 'rgba(140,100,60,0.7)', marginTop: 28, letterSpacing: '0.15em' }}
+        transition={{ delay: 0.7 }}
+        style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(140,100,60,0.6)', marginTop: 12, letterSpacing: '0.15em' }}
       >
         오늘 하루의 기록 🎞️
       </motion.p>
