@@ -449,18 +449,23 @@ function LadderGame({ state, update, advance, goBack }: LadderGameProps) {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4, type: 'spring', stiffness: 160 }}
         >
-          <div className="px-4 py-3 flex items-center justify-between gap-3" style={{ background: 'linear-gradient(135deg, #e0f2fe, #bae6fd)' }}>
-            <div>
-              <p className="font-noto text-sky-400 text-xs tracking-widest mb-0.5">RESULT ✨</p>
-              <h3 className="font-jua text-lg text-slate-700">{ladder.fixedResult.title} 확정! 🎉</h3>
-            </div>
+          <div className="px-4 py-2.5" style={{ background: 'linear-gradient(135deg, #e0f2fe, #bae6fd)' }}>
+            <p className="font-noto text-sky-400 text-xs tracking-widest mb-0.5">RESULT ✨</p>
+            <h3 className="font-jua text-lg text-slate-700">{ladder.fixedResult.title} 확정! 🎉</h3>
+          </div>
+          <div className="px-4 py-3 flex flex-col gap-2">
+            {ladder.fixedResult.desc && (
+              <p className="font-noto text-slate-600 text-sm leading-relaxed">
+                {ladder.fixedResult.desc}
+              </p>
+            )}
             {state.chapter !== 'ch1-result' && (
               <button
                 onClick={() => advance('ch1-result')}
-                className="font-jua text-base text-white px-4 py-2.5 rounded-xl shadow-md active:scale-95 transition-transform shrink-0"
+                className="w-full font-jua text-lg text-white py-3 rounded-2xl shadow-md active:scale-95 transition-transform"
                 style={{ background: 'linear-gradient(135deg, #38bdf8, #0ea5e9)' }}
               >
-                하러 가기 →
+                {ladder.fixedResult.title} 하러 가기 →
               </button>
             )}
           </div>
