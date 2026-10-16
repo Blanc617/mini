@@ -511,13 +511,28 @@ function SummaryScreen({ state, resetState, goBack, photoUrls }: SummaryScreenPr
           {/* 저장 / 공유 버튼 */}
           <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
             <button
-              onClick={() => {
-                photoUrls.forEach((url, i) => {
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = `mini-day-2026-${String(i + 1).padStart(2, '0')}.jpg`;
-                  a.click();
-                });
+              onClick={async () => {
+                try {
+                  const files = await Promise.all(
+                    photoUrls.map(async (url, i) => {
+                      const res = await fetch(url);
+                      const blob = await res.blob();
+                      return new File([blob], `mini-day-2026-${String(i + 1).padStart(2, '0')}.jpg`, { type: blob.type || 'image/jpeg' });
+                    })
+                  );
+                  if (navigator.canShare && navigator.canShare({ files })) {
+                    await navigator.share({ files, title: 'Happy Mini Day 🎉' });
+                  } else {
+                    // 미지원 시 순차 다운로드
+                    for (let i = 0; i < photoUrls.length; i++) {
+                      await new Promise<void>(resolve => setTimeout(resolve, i * 300));
+                      const a = document.createElement('a');
+                      a.href = photoUrls[i];
+                      a.download = `mini-day-2026-${String(i + 1).padStart(2, '0')}.jpg`;
+                      a.click();
+                    }
+                  }
+                } catch { /* 취소 */ }
               }}
               style={{ flex: 1, fontFamily: 'Noto Sans KR, sans-serif', fontSize: 12, fontWeight: 600, color: '#0ea5e9', background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(8px)', border: '1.5px solid rgba(14,165,233,0.25)', borderRadius: 10, padding: '8px 0', cursor: 'pointer' }}
             >
