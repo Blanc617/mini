@@ -61,7 +61,7 @@ function TitleSlide({ photoUrls }: { photoUrls: string[] }) {
         ))}
       </div>
 
-      {/* 생일 스탬프 — 상단 */}
+      {/* 생일 스탬프 — 카드 바로 위 */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8, rotate: -3 }}
         animate={{ opacity: 1, scale: 1, rotate: -3 }}
@@ -73,7 +73,7 @@ function TitleSlide({ photoUrls }: { photoUrls: string[] }) {
           display: 'flex',
           alignItems: 'center',
           gap: 6,
-          marginBottom: 18,
+          marginBottom: 10,
           background: 'rgba(255,255,255,0.5)',
         }}
       >
@@ -254,19 +254,23 @@ function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
         {[...Array(7)].map((_, i) => <div key={i} style={{ width: 14, height: 10, borderRadius: 3, background: 'rgba(180,140,100,0.25)' }} />)}
       </div>
 
-      {/* 생일 스탬프 */}
-      <div style={{ position: 'absolute', top: 52, left: '50%', transform: 'translateX(-50%) rotate(-3deg)',
-        border: '2px solid rgba(140,80,30,0.45)', borderRadius: 6, padding: '6px 16px',
-        display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.5)', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
-        <span style={{ fontSize: 14 }}>🎂</span>
-        <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 13, fontWeight: 700, color: 'rgba(120,60,20,0.8)', letterSpacing: '0.15em' }}>MINI'S BIRTHDAY</span>
-      </div>
+      {/* 스탬프 + 폴라로이드 카드 묶음 — 카드 바로 위에 스탬프 */}
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', pointerEvents: 'none' }}>
 
-      {/* 폴라로이드 카드 — 고정 프레임 */}
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%) rotate(-2deg)',
-        background: 'white', borderRadius: 4, padding: '20px 20px 52px',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', width: 260 }}>
+        {/* 생일 스탬프 */}
+        <div style={{ transform: 'rotate(-3deg)', marginBottom: 10,
+          border: '2px solid rgba(140,80,30,0.45)', borderRadius: 6, padding: '6px 16px',
+          display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.5)', whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: 14 }}>🎂</span>
+          <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 13, fontWeight: 700, color: 'rgba(120,60,20,0.8)', letterSpacing: '0.15em' }}>MINI'S BIRTHDAY</span>
+        </div>
+
+        {/* 폴라로이드 카드 — 고정 프레임 */}
+        <div style={{ transform: 'rotate(-2deg)', pointerEvents: 'auto',
+          background: 'white', borderRadius: 4, padding: '20px 20px 52px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', width: 260 }}>
 
         {/* 사진 영역 — 사진만 교체 */}
         <div style={{ width: 220, height: 220, borderRadius: 2, overflow: 'hidden', marginBottom: 14, position: 'relative', background: '#fde8c8' }}>
@@ -284,7 +288,8 @@ function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
 
         <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>지누 × 미니</span>
         <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>2026. 10. 17</span>
-      </div>
+        </div>{/* 폴라로이드 카드 끝 */}
+      </div>{/* 스탬프+카드 wrapper 끝 */}
 
       {/* 사진 카운터 */}
       <div style={{ position: 'absolute', bottom: 48, left: '50%', transform: 'translateX(-50%)',
@@ -457,9 +462,9 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
       rr(ctx, x - 7, 14, 14, 10, 3); ctx.fill();
       rr(ctx, x - 7, H - 24, 14, 10, 3); ctx.fill();
     }
-    // 생일 스탬프
+    // 생일 스탬프 — 카드 바로 위 (cY - 10gap - 17halfHeight = 307 - 10 - 17 = 280)
     ctx.save();
-    ctx.translate(W / 2, 69);
+    ctx.translate(W / 2, cY - 10 - 17);
     ctx.rotate(-3 * Math.PI / 180);
     ctx.strokeStyle = 'rgba(140,80,30,0.45)'; ctx.lineWidth = 2;
     rr(ctx, -88, -17, 176, 34, 6); ctx.stroke();
