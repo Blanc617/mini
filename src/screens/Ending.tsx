@@ -366,9 +366,12 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
 
   await document.fonts.ready;
 
-  const images = await Promise.all(photoUrls.map(url => new Promise<HTMLImageElement>(res => {
-    const img = new Image(); img.onload = () => res(img); img.src = url;
-  })));
+  const images = (await Promise.all(photoUrls.map(url => new Promise<HTMLImageElement | null>(res => {
+    const img = new Image();
+    img.onload = () => res(img);
+    img.onerror = () => res(null);
+    img.src = url;
+  })))).filter((img): img is HTMLImageElement => img !== null);
 
   // 지원 코덱 순서대로 시도
   const MIME_CANDIDATES = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'];
@@ -538,16 +541,26 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
       const blob = new Blob(chunks, { type: mimeType });
       const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
       const file = new File([blob], `mini-day-2026.${ext}`, { type: mimeType });
-      // 모바일(카카오 인앱 등): Web Share API 우선
+      // 모바일: Web Share API 시도 → 실패 시 다운로드 폴백
+      let shared = false;
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({ files: [file], title: 'Happy Mini Day 🎉' });
-        } catch { /* 취소 */ }
-      } else {
+          shared = true;
+        } catch (e) {
+          // AbortError = 사용자가 공유 취소 → 그냥 종료
+          if (e instanceof DOMException && e.name === 'AbortError') shared = true;
+          // 그 외(NotAllowedError, user gesture 만료 등) → 다운로드 폴백
+        }
+      }
+      if (!shared) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url; a.download = file.name; a.click();
-        URL.revokeObjectURL(url);
+        a.href = url; a.download = file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
       }
       res();
     };
