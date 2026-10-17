@@ -375,7 +375,11 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
 
   // 지원 코덱 순서대로 시도
   const MIME_CANDIDATES = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'];
-  const mimeType = MIME_CANDIDATES.find(m => MediaRecorder.isTypeSupported(m)) ?? 'video/webm';
+  const mimeType = MIME_CANDIDATES.find(m => MediaRecorder.isTypeSupported(m));
+  if (!mimeType) {
+    alert('현재 브라우저에서는 영상 생성이 지원되지 않아요.\nChrome 브라우저에서 열어주세요 🙏');
+    return;
+  }
   const stream = canvas.captureStream(30);
   const recorder = new MediaRecorder(stream, { mimeType });
   const chunks: Blob[] = [];
@@ -718,8 +722,13 @@ function SummaryScreen({ state, resetState, goBack, photoUrls }: SummaryScreenPr
             onClick={async () => {
               if (isGenerating) return;
               setIsGenerating(true);
-              await generateVideo(photoUrls);
-              setIsGenerating(false);
+              try {
+                await generateVideo(photoUrls);
+              } catch {
+                alert('영상 생성 중 오류가 발생했어요. 다시 시도해주세요.');
+              } finally {
+                setIsGenerating(false);
+              }
             }}
             disabled={isGenerating}
             style={{ width: '100%', fontFamily: 'Jua, sans-serif', fontSize: 15, color: 'white', background: isGenerating ? 'rgba(14,165,233,0.5)' : 'linear-gradient(135deg, #38bdf8, #0ea5e9)', border: 'none', borderRadius: 12, padding: '11px 0', cursor: isGenerating ? 'default' : 'pointer', marginTop: 8, boxShadow: '0 4px 12px rgba(14,165,233,0.3)' }}
