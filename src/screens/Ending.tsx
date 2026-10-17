@@ -580,7 +580,7 @@ interface SummaryScreenProps {
   photoUrls: string[];
 }
 
-function SummaryScreen({ state, resetState, goBack, photoUrls }: SummaryScreenProps) {
+function SummaryScreen({ state, goBack, photoUrls }: SummaryScreenProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const restaurant = state.ch2.restaurantId ? fixedRestaurant : null;
