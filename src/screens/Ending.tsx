@@ -852,57 +852,10 @@ function SummaryScreen({ state, resetState, goBack, photoUrls }: SummaryScreenPr
         )}
       </AnimatePresence>
 
-      {/* 다시 시작 */}
-      <motion.div style={{ zIndex: 1 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}>
-        <ResetButton resetState={resetState} />
-      </motion.div>
     </div>
   );
 }
 
-// ─── Reset button (summary phase) ────────────────────────────────────────────
-
-function ResetButton({ resetState }: { resetState: () => void }) {
-  const [confirm, setConfirm] = useState(false);
-
-  return (
-    <div className="mt-6 mb-2 flex flex-col items-center gap-2">
-      {!confirm ? (
-        <button
-          onClick={() => setConfirm(true)}
-          style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 13, color: '#94a3b8',
-            background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
-        >
-          ↺ 처음부터 다시 시작
-        </button>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-          <p style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 13, color: '#64748b', margin: 0 }}>
-            진행 기록이 모두 사라져요. 진짜요?
-          </p>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button
-              onClick={() => resetState()}
-              style={{ fontFamily: 'Jua, sans-serif', fontSize: 14, color: '#fff',
-                background: 'linear-gradient(135deg, #f87171, #ef4444)',
-                border: 'none', borderRadius: 12, padding: '8px 20px', cursor: 'pointer' }}
-            >
-              네, 다시 시작
-            </button>
-            <button
-              onClick={() => setConfirm(false)}
-              style={{ fontFamily: 'Jua, sans-serif', fontSize: 14, color: '#64748b',
-                background: 'rgba(255,255,255,0.6)', border: '1px solid #e2e8f0',
-                borderRadius: 12, padding: '8px 20px', cursor: 'pointer' }}
-            >
-              취소
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
 
 // ─── Ending (main export) ─────────────────────────────────────────────────────
 
