@@ -212,7 +212,7 @@ function Slideshow({ photoUrls, onEnd, onBack }: SlideshowProps) {
           ))}
         </div>
 
-        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>미니의 행복한 생일</span>
+        <span style={{ fontFamily: 'Jua, sans-serif', fontSize: 18, color: '#5c3d1e', letterSpacing: 2 }}>미니의 행복한 생일 🩵</span>
         <span style={{ fontFamily: 'Noto Sans KR, sans-serif', fontSize: 11, color: 'rgba(120,80,40,0.6)', marginTop: 4, letterSpacing: '0.12em' }}>2026. 10. 17</span>
         </div>{/* 폴라로이드 카드 끝 */}
       </div>{/* 스탬프+카드 wrapper 끝 */}
@@ -426,7 +426,7 @@ async function generateVideo(photoUrls: string[]): Promise<void> {
     // 캡션
     const relPY = -cH / 2 + 20 + pS;
     ctx.fillStyle = '#5c3d1e'; ctx.font = '18px "Jua", sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('미니의 행복한 생일', 0, relPY + 26);
+    ctx.fillText('미니의 행복한 생일 🩵', 0, relPY + 26);
     ctx.fillStyle = 'rgba(120,80,40,0.65)'; ctx.font = '11px "Noto Sans KR", sans-serif';
     ctx.fillText('2026. 10. 17', 0, relPY + 44);
     ctx.restore();
